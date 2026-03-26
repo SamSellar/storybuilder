@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Story Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #fdf6ee; --card: #ffffff; --ink: #2d2013; --muted: #8a7560;
+  --border: #e8ddd0; --accent1: #f97316; --accent2: #8b5cf6;
+  --accent4: #10b981; --selected-border: #f97316; --selected-bg: #fff7ed;
+  --btn-bg: #f97316; --btn-hover: #ea6c0a;
+}
+body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; color: var(--ink); }
+#app { max-width: 780px; margin: 0 auto; padding: 2rem 1rem 4rem; }
+.top-bar { text-align: center; margin-bottom: 2rem; }
+.app-title { font-family: 'Baloo 2', cursive; font-size: 2.2rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
+.app-title span { color: var(--accent1); }
+.app-subtitle { color: var(--muted); font-size: 1rem; margin-top: 0.4rem; }
+.steps-row { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 2rem; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+.step-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 0.8rem; color: var(--muted); flex-shrink: 0; transition: all 0.3s; }
+.step-dot.active { background: var(--accent1); border-color: var(--accent1); color: white; transform: scale(1.15); }
+.step-dot.done { background: var(--accent4); border-color: var(--accent4); color: white; }
+.step-line { height: 2px; width: 22px; background: var(--border); flex-shrink: 0; transition: background 0.3s; }
+.step-line.done { background: var(--accent4); }
+.step-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; padding: 1.75rem; margin-bottom: 1.25rem; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+@keyframes popIn { from { opacity:0; transform:scale(0.95) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.step-eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent1); margin-bottom: 0.4rem; }
+.step-question { font-family: 'Baloo 2', cursive; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 1.25rem; line-height: 1.3; }
+.name-input { width: 100%; border: 2px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; font-family: 'Baloo 2', cursive; font-size: 1.1rem; font-weight: 600; color: var(--ink); background: var(--bg); outline: none; transition: border-color 0.2s; }
+.name-input:focus { border-color: var(--accent1); }
+.name-input::placeholder { color: #c9b99e; font-weight: 400; }
+.choices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+.choice-btn { background: var(--bg); border: 2px solid var(--border); border-radius: 14px; padding: 0.9rem 0.75rem; cursor: pointer; transition: all 0.18s; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.choice-btn:hover { border-color: var(--accent1); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(249,115,22,0.15); }
+.choice-btn.selected { background: var(--selected-bg); border-color: var(--selected-border); box-shadow: 0 0 0 3px rgba(249,115,22,0.2); transform: translateY(-2px); }
+.choice-emoji { font-size: 2rem; line-height: 1; }
+.choice-label { font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 0.9rem; color: var(--ink); line-height: 1.2; }
+.length-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.length-card { background: var(--bg); border: 2.5px solid var(--border); border-radius: 18px; padding: 1.5rem 1rem; cursor: pointer; transition: all 0.2s; text-align: center; }
+.length-card:hover { border-color: var(--accent1); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(249,115,22,0.15); }
+.length-card.selected { background: var(--selected-bg); border-color: var(--accent1); box-shadow: 0 0 0 4px rgba(249,115,22,0.2); transform: translateY(-3px); }
+.length-card-emoji { font-size: 3rem; display: block; margin-bottom: 0.6rem; }
+.length-card-title { font-family: 'Baloo 2', cursive; font-size: 1.2rem; font-weight: 800; color: var(--ink); margin-bottom: 0.3rem; }
+.length-card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
+.next-btn { display: block; width: 100%; margin-top: 1rem; background: var(--btn-bg); color: white; border: none; border-radius: 14px; padding: 0.95rem; font-family: 'Baloo 2', cursive; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 14px rgba(249,115,22,0.35); letter-spacing: 0.3px; }
+.next-btn:hover { background: var(--btn-hover); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(249,115,22,0.4); }
+.next-btn:disabled { background: #d1c4b8; box-shadow: none; cursor: not-allowed; transform: none; }
+.summary-bar { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 0.9rem 1.25rem; margin-bottom: 1.25rem; display: flex; flex-wrap: wrap; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.summary-chip { background: var(--bg); border: 1.5px solid var(--border); border-radius: 50px; padding: 4px 12px; font-size: 0.82rem; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 5px; }
+.summary-chip .chip-val { color: var(--ink); }
+
+/* Loading screen */
+.loading-screen { background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: 0 2px 16px rgba(0,0,0,0.07); animation: popIn 0.4s ease; }
+.loading-top { text-align: center; margin-bottom: 1rem; }
+.loading-title { font-family: 'Baloo 2', cursive; font-size: 1.3rem; font-weight: 700; color: var(--ink); }
+.loading-sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.25rem; }
+.writing-dots::after { content: ''; animation: dots 1.5s steps(4,end) infinite; }
+@keyframes dots { 0%,100%{content:'';}25%{content:'.';}50%{content:'..';}75%{content:'...';} }
+.game-label { font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 700; color: var(--muted); text-align: center; margin-bottom: 0.5rem; }
+#gameCanvas { display: block; width: 100%; border-radius: 14px; border: 2px solid var(--border); cursor: pointer; touch-action: manipulation; }
+.game-score-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; font-family: 'Baloo 2', cursive; font-size: 0.9rem; color: var(--muted); }
+.game-score-row span { font-weight: 700; color: var(--ink); }
+.tap-hint { text-align: center; font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+
+/* Story ready banner */
+.story-ready-banner { background: #f0fdf4; border: 2px solid #86efac; border-radius: 14px; padding: 1rem 1.25rem; text-align: center; margin-bottom: 1rem; font-family: 'Baloo 2', cursive; font-size: 1.1rem; font-weight: 700; color: #16a34a; animation: popIn 0.4s ease; display: none; }
+
+/* Story output */
+.story-output { background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; padding: 2rem; margin-bottom: 1.25rem; box-shadow: 0 2px 16px rgba(0,0,0,0.07); animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.story-output-header { text-align: center; margin-bottom: 1.5rem; }
+.story-badge { display: inline-block; background: #fff7ed; border: 1.5px solid #fed7aa; color: var(--accent1); border-radius: 50px; padding: 4px 14px; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.75rem; }
+.story-main-title { font-family: 'Baloo 2', cursive; font-size: 1.8rem; font-weight: 800; color: var(--ink); line-height: 1.2; margin-bottom: 0.25rem; }
+.story-author { color: var(--muted); font-size: 0.9rem; }
+.story-divider { border: none; border-top: 1.5px solid var(--border); margin: 1.25rem 0; }
+.story-body { font-size: 1.08rem; line-height: 1.85; color: var(--ink); }
+.story-body p { margin-bottom: 1rem; }
+.story-body p:last-child { margin-bottom: 0; }
+.story-highlight { font-weight: 700; color: var(--accent2); }
+.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0.5rem; }
+.action-btn { border: 2px solid var(--border); border-radius: 14px; padding: 0.8rem; font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
+.action-btn.primary { background: var(--accent2); border-color: var(--accent2); color: white; box-shadow: 0 4px 14px rgba(139,92,246,0.3); }
+.action-btn.primary:hover { background: #7c3aed; transform: translateY(-2px); }
+.action-btn.secondary { background: var(--bg); color: var(--ink); }
+.action-btn.secondary:hover { border-color: var(--accent1); transform: translateY(-2px); }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="top-bar">
+    <div class="app-title">✨ My <span>Story Builder</span></div>
+    <div class="app-subtitle">Make your choices — then read your very own story!</div>
+  </div>
+  <div id="stepsRow" class="steps-row"></div>
+  <div id="summaryBar" class="summary-bar" style="display:none"></div>
+  <div id="mainArea"></div>
+</div>
+
+<script>
+const steps = [
+  { id:'name', eyebrow:'Step 1 of 7', question:"What is your hero's name?", type:'text', placeholder:'Type a name here...' },
+  { id:'character', eyebrow:'Step 2 of 7', question:'What kind of character are they?', type:'choice', choices:[
+    {emoji:'🧙',label:'Wizard'},{emoji:'🤖',label:'Robot'},{emoji:'🦊',label:'Talking fox'},
+    {emoji:'🧚',label:'Fairy'},{emoji:'🐉',label:'Tiny dragon'},{emoji:'🏄',label:'Surfer kid'},
+    {emoji:'🦕',label:'Dinosaur'},{emoji:'👩‍🚀',label:'Astronaut'}
+  ]},
+  { id:'theme', eyebrow:'Step 3 of 7', question:'What world does the story happen in?', type:'choice', choices:[
+    {emoji:'🏰',label:'Magic kingdom'},{emoji:'🌊',label:'Underwater city'},{emoji:'🚀',label:'Outer space'},
+    {emoji:'🌴',label:'Jungle island'},{emoji:'🏙️',label:'Futuristic city'},{emoji:'🍄',label:'Enchanted forest'},
+    {emoji:'🏜️',label:'Australian outback'},{emoji:'❄️',label:'Frozen land'}
+  ]},
+  { id:'setting', eyebrow:'Step 4 of 7', question:'Where does the big adventure start?', type:'choice', choices:[
+    {emoji:'🗼',label:'A tall tower'},{emoji:'🌋',label:'A volcano'},{emoji:'🛸',label:'A spaceship'},
+    {emoji:'🏚️',label:'A hidden cave'},{emoji:'🌈',label:'A rainbow bridge'},{emoji:'🌀',label:'A swirling portal'},
+    {emoji:'🎪',label:'A travelling fair'},{emoji:'🌳',label:'A giant tree'}
+  ]},
+  { id:'problem', eyebrow:'Step 5 of 7', question:'What is the big problem to solve?', type:'choice', choices:[
+    {emoji:'🌑',label:'The sun has vanished'},{emoji:'😴',label:'Everyone fell asleep'},
+    {emoji:'🗺️',label:'A map leads to danger'},{emoji:'🔐',label:'A door no one can open'},
+    {emoji:'👾',label:'A monster is lost'},{emoji:'💎',label:'A stolen gem'},
+    {emoji:'🌧️',label:"It won't stop raining"},{emoji:'🤫',label:'A mysterious secret'}
+  ]},
+  { id:'ending', eyebrow:'Step 6 of 7', question:'How does your story end?', type:'choice', choices:[
+    {emoji:'🎉',label:'A big celebration'},{emoji:'🤝',label:'Making a new friend'},
+    {emoji:'🏠',label:'Getting back home'},{emoji:'🌟',label:'Becoming a hero'},
+    {emoji:'🧩',label:'Solving the mystery'},{emoji:'🕊️',label:'Bringing peace'},
+    {emoji:'😂',label:'A funny surprise'},{emoji:'🌅',label:'A new journey begins'}
+  ]},
+  { id:'length', eyebrow:'Step 7 of 7', question:'How long should your story be?', type:'length' }
+];
+
+let currentStep = 0;
+let answers = {};
+let storyReady = false;
+let activeRaf = null;
+
+function renderStepDots() {
+  const row = document.getElementById('stepsRow');
+  row.innerHTML = '';
+  steps.forEach((s,i) => {
+    const dot = document.createElement('div');
+    dot.className = 'step-dot'+(i===currentStep?' active':i<currentStep?' done':'');
+    dot.textContent = i<currentStep?'✓':i+1;
+    row.appendChild(dot);
+    if(i<steps.length-1){
+      const line = document.createElement('div');
+      line.className = 'step-line'+(i<currentStep?' done':'');
+      row.appendChild(line);
+    }
+  });
+}
+
+function renderSummaryBar() {
+  const bar = document.getElementById('summaryBar');
+  if(Object.keys(answers).length===0){bar.style.display='none';return;}
+  bar.style.display='flex';
+  const labels={name:'🦸 Hero',character:'🎭 Type',theme:'🌍 World',setting:'📍 Start',problem:'⚡ Problem',ending:'🏁 Ending',length:'📖 Length'};
+  bar.innerHTML=Object.entries(answers).map(([k,v])=>{
+    const val=typeof v==='object'?v.label:v;
+    return `<div class="summary-chip">${labels[k]||k}: <span class="chip-val">${val}</span></div>`;
+  }).join('');
+}
+
+function renderStep() {
+  renderStepDots();
+  renderSummaryBar();
+  const step = steps[currentStep];
+  const area = document.getElementById('mainArea');
+
+  if(step.type==='text') {
+    area.innerHTML=`<div class="step-card">
+      <div class="step-eyebrow">${step.eyebrow}</div>
+      <div class="step-question">${step.question}</div>
+      <input class="name-input" type="text" id="nameInput" placeholder="${step.placeholder}" maxlength="20" value="${answers.name||''}" />
+      <button class="next-btn" onclick="advanceText()" style="margin-top:1.25rem">Next →</button>
+    </div>`;
+    const inp=document.getElementById('nameInput');
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter')advanceText();});
+    inp.focus();
+
+  } else if(step.type==='length') {
+    const sel=answers.length;
+    area.innerHTML=`<div class="step-card">
+      <div class="step-eyebrow">${step.eyebrow}</div>
+      <div class="step-question">${step.question}</div>
+      <div class="length-grid">
+        <div class="length-card ${sel&&sel.paragraphs===2?'selected':''}" onclick="selectLength('short')">
+          <span class="length-card-emoji">⚡</span>
+          <div class="length-card-title">Short story</div>
+          <div class="length-card-desc">2 paragraphs — quick and punchy!</div>
+        </div>
+        <div class="length-card ${sel&&sel.paragraphs===4?'selected':''}" onclick="selectLength('long')">
+          <span class="length-card-emoji">📚</span>
+          <div class="length-card-title">Long story</div>
+          <div class="length-card-desc">4 paragraphs — full of detail!</div>
+        </div>
+      </div>
+      <button class="next-btn" id="nextBtn" onclick="advanceChoice()" ${!answers.length?'disabled':''} style="margin-top:1.25rem">Build my story! ✨</button>
+    </div>`;
+
+  } else {
+    area.innerHTML=`<div class="step-card">
+      <div class="step-eyebrow">${step.eyebrow}</div>
+      <div class="step-question">${step.question}</div>
+      <div class="choices-grid">
+        ${step.choices.map((c,i)=>`
+          <button class="choice-btn ${answers[step.id]&&answers[step.id].label===c.label?'selected':''}" onclick="selectChoice(${i})">
+            <span class="choice-emoji">${c.emoji}</span>
+            <span class="choice-label">${c.label}</span>
+          </button>`).join('')}
+      </div>
+      <button class="next-btn" id="nextBtn" onclick="advanceChoice()" ${!answers[step.id]?'disabled':''} style="margin-top:1.25rem">Next →</button>
+    </div>`;
+  }
+}
+
+function selectLength(val) {
+  answers.length = val==='short'?{label:'Short story',paragraphs:2}:{label:'Long story',paragraphs:4};
+  document.querySelectorAll('.length-card').forEach((c,i)=>{
+    c.className='length-card'+(i===(val==='short'?0:1)?' selected':'');
+  });
+  document.getElementById('nextBtn').disabled=false;
+}
+
+function selectChoice(idx) {
+  const step=steps[currentStep];
+  answers[step.id]=step.choices[idx];
+  document.querySelectorAll('.choice-btn').forEach((b,i)=>b.className='choice-btn'+(i===idx?' selected':''));
+  document.getElementById('nextBtn').disabled=false;
+}
+
+function advanceText() {
+  const val=document.getElementById('nameInput').value.trim();
+  if(!val){document.getElementById('nameInput').style.borderColor='#f97316';return;}
+  answers.name=val; currentStep++; renderStep();
+}
+
+function advanceChoice() {
+  const step=steps[currentStep];
+  if(step.type==='length'&&!answers.length)return;
+  if(step.type==='choice'&&!answers[step.id])return;
+  currentStep++;
+  if(currentStep>=steps.length){buildStory();}else{renderStep();}
+}
+
+/* ===== JUMP GAME ===== */
+function startJumpGame() {
+  const canvas = document.getElementById('gameCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth || 680;
+  const H = 160;
+  canvas.width = W;
+  canvas.height = H;
+
+  const GROUND_Y = H - 32;
+  let gameState = 'idle'; // idle, running, dead
+  let score = 0, hiScore = 0, speed = 5, frame = 0;
+  let nextObs = 100;
+
+  const hero = { x:55, y:GROUND_Y, w:26, h:34, vy:0, onGround:true, legT:0 };
+  let obstacles = [];
+  let clouds = [{x:W*0.25,y:22},{x:W*0.6,y:14},{x:W*0.88,y:28}];
+
+  function doJump() {
+    if(gameState==='dead'){ restart(); return; }
+    if(gameState==='idle') gameState='running';
+    if(hero.onGround){ hero.vy=-12.5; hero.onGround=false; }
+  }
+
+  function restart() {
+    gameState='running'; score=0; speed=5; frame=0; nextObs=100;
+    hero.y=GROUND_Y; hero.vy=0; hero.onGround=true; hero.legT=0;
+    obstacles=[];
+  }
+
+  function spawnObs() {
+    const h=26+Math.random()*22, w=14+Math.random()*10;
+    obstacles.push({x:W+10, y:GROUND_Y+hero.h-h, w, h});
+  }
+
+  function drawCloud(x,y,s) {
+    ctx.save(); ctx.globalAlpha=0.75; ctx.fillStyle='#fff';
+    ctx.beginPath();
+    ctx.arc(x,y,13*s,0,Math.PI*2);
+    ctx.arc(x+15*s,y-5*s,17*s,0,Math.PI*2);
+    ctx.arc(x+32*s,y,12*s,0,Math.PI*2);
+    ctx.fill(); ctx.restore();
+  }
+
+  function drawHero() {
+    const bx=hero.x, by=hero.y-hero.h;
+    // body
+    ctx.fillStyle='#fff7ed';
+    ctx.fillRect(bx+4,by+16,18,14);
+    // arms
+    ctx.fillStyle='#f97316';
+    ctx.fillRect(bx,by+18,6,10);
+    ctx.fillRect(bx+20,by+18,6,10);
+    // head
+    ctx.fillStyle='#f97316';
+    ctx.beginPath(); ctx.arc(bx+13,by+9,10,0,Math.PI*2); ctx.fill();
+    // eyes
+    ctx.fillStyle='#333';
+    if(gameState==='dead'){
+      ctx.fillText('x',bx+7,by+11); ctx.fillText('x',bx+15,by+11);
+    } else {
+      ctx.fillRect(bx+8,by+6,3,3); ctx.fillRect(bx+16,by+6,3,3);
+      ctx.fillStyle='white';
+      ctx.fillRect(bx+9,by+7,1,1); ctx.fillRect(bx+17,by+7,1,1);
+    }
+    // legs
+    ctx.fillStyle='#d97706';
+    if(hero.onGround && gameState==='running'){
+      const lp=Math.sin(hero.legT)*5;
+      ctx.fillRect(bx+5,by+29,8,9+lp);
+      ctx.fillRect(bx+14,by+29,8,9-lp);
+    } else {
+      ctx.fillRect(bx+5,by+29,8,11);
+      ctx.fillRect(bx+14,by+29,8,11);
+    }
+  }
+
+  function drawCactus(o) {
+    ctx.fillStyle='#4caf50';
+    ctx.fillRect(o.x+o.w/2-4,o.y,8,o.h);
+    ctx.fillStyle='#388e3c';
+    ctx.fillRect(o.x+o.w/2-4,o.y,8,5);
+    // arms
+    const armH=Math.min(o.h*0.5,14);
+    ctx.fillStyle='#4caf50';
+    ctx.fillRect(o.x,o.y+6,o.w/2-4,6);
+    ctx.fillRect(o.x,o.y+1,5,11);
+    ctx.fillRect(o.x+o.w/2+4,o.y+8,o.w/2-4,6);
+    ctx.fillRect(o.x+o.w-5,o.y+3,5,11);
+  }
+
+  function hitTest() {
+    for(const o of obstacles){
+      if(hero.x+20>o.x+3 && hero.x+6<o.x+o.w-3 && hero.y>o.y+4 && hero.y-hero.h<o.y+o.h-4)
+        return true;
+    }
+    return false;
+  }
+
+  function tick() {
+    activeRaf = requestAnimationFrame(tick);
+    frame++;
+    // sky
+    ctx.fillStyle='#daeef8'; ctx.fillRect(0,0,W,H);
+    // clouds
+    clouds.forEach(c=>{
+      drawCloud(c.x,c.y,1);
+      if(gameState==='running') c.x-=0.7;
+      if(c.x<-70) c.x=W+40;
+    });
+    // ground
+    ctx.fillStyle='#6dbf45'; ctx.fillRect(0,GROUND_Y+hero.h,W,6);
+    ctx.fillStyle='#8d6840'; ctx.fillRect(0,GROUND_Y+hero.h+5,W,H-(GROUND_Y+hero.h+5));
+    // ground line detail
+    ctx.fillStyle='#5aa338';
+    for(let gx=((frame*speed)%40);gx<W;gx+=40){
+      ctx.fillRect(gx,GROUND_Y+hero.h,20,2);
+    }
+
+    if(gameState==='running'){
+      score++;
+      if(score%400===0) speed=Math.min(speed+0.6,13);
+      // physics
+      hero.vy+=0.72; hero.y+=hero.vy;
+      if(hero.y>=GROUND_Y){ hero.y=GROUND_Y; hero.vy=0; hero.onGround=true; }
+      hero.legT+=0.28;
+      // obstacles
+      nextObs--;
+      if(nextObs<=0){ spawnObs(); nextObs=110+Math.random()*90; }
+      obstacles.forEach(o=>o.x-=speed);
+      obstacles=obstacles.filter(o=>o.x>-60);
+      if(hitTest()){ gameState='dead'; if(score>hiScore)hiScore=score; }
+    }
+
+    obstacles.forEach(o=>drawCactus(o));
+    drawHero();
+
+    // score
+    ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.font='bold 13px Baloo 2,sans-serif'; ctx.textAlign='right';
+    ctx.fillText(Math.floor(score/10),W-10,20);
+
+    // overlays
+    if(gameState==='idle'||gameState==='dead'){
+      ctx.fillStyle='rgba(0,0,0,0.42)';
+      ctx.roundRect ? (ctx.beginPath(),ctx.roundRect(W/2-115,H/2-26,230,52,10),ctx.fill())
+                    : ctx.fillRect(W/2-115,H/2-26,230,52);
+      ctx.fillStyle='white'; ctx.font='bold 14px Baloo 2,sans-serif'; ctx.textAlign='center';
+      ctx.fillText(gameState==='dead'?`Score: ${Math.floor(score/10)} — Tap to try again!`:'Tap or press SPACE to start jumping!',W/2,H/2+6);
+    }
+
+    // update display scores
+    const ls=document.getElementById('liveScore');
+    const hs=document.getElementById('hiScore');
+    if(ls) ls.textContent=Math.floor(score/10);
+    if(hs) hs.textContent=Math.floor(hiScore/10);
+
+    // story ready banner
+    if(storyReady){
+      const banner=document.getElementById('storyReadyBanner');
+      if(banner) banner.style.display='block';
+    }
+  }
+
+  canvas.addEventListener('click', doJump);
+  canvas.addEventListener('touchstart', e=>{e.preventDefault(); doJump();},{passive:false});
+  document.addEventListener('keydown', e=>{if(e.code==='Space'&&document.getElementById('gameCanvas')){e.preventDefault();doJump();}});
+
+  if(activeRaf) cancelAnimationFrame(activeRaf);
+  activeRaf = requestAnimationFrame(tick);
+}
+
+/* ===== BUILD STORY ===== */
+function buildStory() {
+  if(activeRaf){cancelAnimationFrame(activeRaf); activeRaf=null;}
+  renderStepDots();
+  renderSummaryBar();
+  document.getElementById('stepsRow').style.display='none';
+  storyReady=false;
+
+  const {name,character,theme,setting,problem,ending,length} = answers;
+  const paraCount = length?length.paragraphs:4;
+  const area = document.getElementById('mainArea');
+
+  area.innerHTML=`
+    <div class="story-ready-banner" id="storyReadyBanner">🎉 Your story is ready! Scroll down to read it!</div>
+    <div class="loading-screen">
+      <div class="loading-top">
+        <div class="loading-title">Writing your story<span class="writing-dots"></span></div>
+        <div class="loading-sub">Play the jumping game while you wait!</div>
+      </div>
+      <div class="game-label">Jump over the cacti — tap the game or press SPACE!</div>
+      <canvas id="gameCanvas" style="height:160px;display:block;width:100%"></canvas>
+      <div class="game-score-row">
+        <div>Score: <span id="liveScore">0</span></div>
+        <div>Best: <span id="hiScore">0</span></div>
+      </div>
+    </div>
+    <div id="storyArea"></div>
+    <div id="actionArea"></div>
+  `;
+
+  setTimeout(()=>startJumpGame(), 120);
+
+  const prompt=`Write a ${paraCount===2?'short and punchy':'detailed and exciting'} story for a Year 3 student (age 8-9).
+Use EXACTLY these details the student chose:
+- Hero's name: ${name}
+- Character type: ${character.label}
+- World: ${theme.label}
+- Where the adventure starts: ${setting.label}
+- The big problem: ${problem.label}
+- How it ends: ${ending.label}
+
+Rules:
+- Exactly ${paraCount} paragraphs — no more, no less
+- Use the hero's name frequently
+- Exciting, vivid, age-appropriate language with short punchy sentences
+- The title should be creative and include the hero's name
+- Output the title on the very first line (no label, just the title), then a blank line, then the story
+- Plain text only — no markdown, no asterisks, no bullet points`;
+
+  fetch("https://api.anthropic.com/v1/messages",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      model:"claude-sonnet-4-20250514",
+      max_tokens:1000,
+      messages:[{role:"user",content:prompt}]
+    })
+  })
+  .then(r=>r.json())
+  .then(data=>{
+    const text=data.content.map(c=>c.text||'').join('');
+    const lines=text.trim().split('\n').filter(l=>l.trim()!=='');
+    const title=lines[0];
+    const body=lines.slice(1).join('\n');
+    const rawParas=body.split(/\n\s*\n/).map(p=>p.replace(/\n/g,' ').trim()).filter(Boolean);
+
+    const safeRx=name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    const storyHTML=rawParas.map(p=>{
+      const hl=p.replace(new RegExp(`\\b${safeRx}\\b`,'g'),`<span class="story-highlight">${name}</span>`);
+      return `<p>${hl}</p>`;
+    }).join('');
+
+    storyReady=true;
+    document.getElementById('storyArea').innerHTML=`
+      <div class="story-output">
+        <div class="story-output-header">
+          <div class="story-badge">✨ Your ${paraCount===2?'Short':'Long'} Story</div>
+          <div class="story-main-title">${title}</div>
+          <div class="story-author">A story by ${name}</div>
+        </div>
+        <div class="story-divider" style="border:none;border-top:1.5px solid var(--border);margin:1.25rem 0"></div>
+        <div class="story-body">${storyHTML}</div>
+      </div>`;
+    document.getElementById('actionArea').innerHTML=`
+      <div class="action-row">
+        <button class="action-btn primary" onclick="regenerate()">✨ Write it differently</button>
+        <button class="action-btn secondary" onclick="startOver()">🔁 Make a new story</button>
+      </div>`;
+    const banner=document.getElementById('storyReadyBanner');
+    if(banner){banner.style.display='block'; banner.scrollIntoView({behavior:'smooth',block:'start'});}
+  })
+  .catch(()=>{
+    storyReady=true;
+    document.getElementById('storyArea').innerHTML=`
+      <div class="loading-screen" style="text-align:center;padding:2rem">
+        <div style="font-size:2.5rem;margin-bottom:0.5rem">😟</div>
+        <div class="loading-title">Oops! Something went wrong.</div>
+        <div class="loading-sub">Check your internet and try again.</div>
+      </div>`;
+    document.getElementById('actionArea').innerHTML=`<button class="next-btn" onclick="buildStory()" style="margin-top:1rem">Try again</button>`;
+  });
+}
+
+function regenerate(){
+  if(activeRaf){cancelAnimationFrame(activeRaf);activeRaf=null;}
+  buildStory();
+}
+
+function startOver(){
+  if(activeRaf){cancelAnimationFrame(activeRaf);activeRaf=null;}
+  currentStep=0; answers={};
+  document.getElementById('stepsRow').style.display='flex';
+  storyReady=false;
+  renderStep();
+}
+
+renderStep();
+</script>
+</body>
+</html>
