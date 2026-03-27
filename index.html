@@ -6,534 +6,438 @@
 <title>My Story Builder</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-:root {
-  --bg: #fdf6ee; --card: #ffffff; --ink: #2d2013; --muted: #8a7560;
-  --border: #e8ddd0; --accent1: #f97316; --accent2: #8b5cf6;
-  --accent4: #10b981; --selected-border: #f97316; --selected-bg: #fff7ed;
-  --btn-bg: #f97316; --btn-hover: #ea6c0a;
-}
-body { font-family: 'Nunito', sans-serif; background: var(--bg); min-height: 100vh; color: var(--ink); }
-#app { max-width: 780px; margin: 0 auto; padding: 2rem 1rem 4rem; }
-.top-bar { text-align: center; margin-bottom: 2rem; }
-.app-title { font-family: 'Baloo 2', cursive; font-size: 2.2rem; font-weight: 800; color: var(--ink); line-height: 1.1; }
-.app-title span { color: var(--accent1); }
-.app-subtitle { color: var(--muted); font-size: 1rem; margin-top: 0.4rem; }
-.steps-row { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 2rem; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
-.step-dot { width: 30px; height: 30px; border-radius: 50%; border: 2px solid var(--border); background: var(--card); display: flex; align-items: center; justify-content: center; font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 0.8rem; color: var(--muted); flex-shrink: 0; transition: all 0.3s; }
-.step-dot.active { background: var(--accent1); border-color: var(--accent1); color: white; transform: scale(1.15); }
-.step-dot.done { background: var(--accent4); border-color: var(--accent4); color: white; }
-.step-line { height: 2px; width: 22px; background: var(--border); flex-shrink: 0; transition: background 0.3s; }
-.step-line.done { background: var(--accent4); }
-.step-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; padding: 1.75rem; margin-bottom: 1.25rem; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-@keyframes popIn { from { opacity:0; transform:scale(0.95) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }
-.step-eyebrow { font-size: 0.75rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent1); margin-bottom: 0.4rem; }
-.step-question { font-family: 'Baloo 2', cursive; font-size: 1.4rem; font-weight: 700; color: var(--ink); margin-bottom: 1.25rem; line-height: 1.3; }
-.name-input { width: 100%; border: 2px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; font-family: 'Baloo 2', cursive; font-size: 1.1rem; font-weight: 600; color: var(--ink); background: var(--bg); outline: none; transition: border-color 0.2s; }
-.name-input:focus { border-color: var(--accent1); }
-.name-input::placeholder { color: #c9b99e; font-weight: 400; }
-.choices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
-.choice-btn { background: var(--bg); border: 2px solid var(--border); border-radius: 14px; padding: 0.9rem 0.75rem; cursor: pointer; transition: all 0.18s; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.choice-btn:hover { border-color: var(--accent1); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(249,115,22,0.15); }
-.choice-btn.selected { background: var(--selected-bg); border-color: var(--selected-border); box-shadow: 0 0 0 3px rgba(249,115,22,0.2); transform: translateY(-2px); }
-.choice-emoji { font-size: 2rem; line-height: 1; }
-.choice-label { font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 0.9rem; color: var(--ink); line-height: 1.2; }
-.length-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.length-card { background: var(--bg); border: 2.5px solid var(--border); border-radius: 18px; padding: 1.5rem 1rem; cursor: pointer; transition: all 0.2s; text-align: center; }
-.length-card:hover { border-color: var(--accent1); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(249,115,22,0.15); }
-.length-card.selected { background: var(--selected-bg); border-color: var(--accent1); box-shadow: 0 0 0 4px rgba(249,115,22,0.2); transform: translateY(-3px); }
-.length-card-emoji { font-size: 3rem; display: block; margin-bottom: 0.6rem; }
-.length-card-title { font-family: 'Baloo 2', cursive; font-size: 1.2rem; font-weight: 800; color: var(--ink); margin-bottom: 0.3rem; }
-.length-card-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.4; }
-.next-btn { display: block; width: 100%; margin-top: 1rem; background: var(--btn-bg); color: white; border: none; border-radius: 14px; padding: 0.95rem; font-family: 'Baloo 2', cursive; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 14px rgba(249,115,22,0.35); letter-spacing: 0.3px; }
-.next-btn:hover { background: var(--btn-hover); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(249,115,22,0.4); }
-.next-btn:disabled { background: #d1c4b8; box-shadow: none; cursor: not-allowed; transform: none; }
-.summary-bar { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 0.9rem 1.25rem; margin-bottom: 1.25rem; display: flex; flex-wrap: wrap; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-.summary-chip { background: var(--bg); border: 1.5px solid var(--border); border-radius: 50px; padding: 4px 12px; font-size: 0.82rem; font-weight: 600; color: var(--muted); display: flex; align-items: center; gap: 5px; }
-.summary-chip .chip-val { color: var(--ink); }
-
-/* Loading screen */
-.loading-screen { background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.25rem; box-shadow: 0 2px 16px rgba(0,0,0,0.07); animation: popIn 0.4s ease; }
-.loading-top { text-align: center; margin-bottom: 1rem; }
-.loading-title { font-family: 'Baloo 2', cursive; font-size: 1.3rem; font-weight: 700; color: var(--ink); }
-.loading-sub { color: var(--muted); font-size: 0.9rem; margin-top: 0.25rem; }
-.writing-dots::after { content: ''; animation: dots 1.5s steps(4,end) infinite; }
-@keyframes dots { 0%,100%{content:'';}25%{content:'.';}50%{content:'..';}75%{content:'...';} }
-.game-label { font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 700; color: var(--muted); text-align: center; margin-bottom: 0.5rem; }
-#gameCanvas { display: block; width: 100%; border-radius: 14px; border: 2px solid var(--border); cursor: pointer; touch-action: manipulation; }
-.game-score-row { display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem; font-family: 'Baloo 2', cursive; font-size: 0.9rem; color: var(--muted); }
-.game-score-row span { font-weight: 700; color: var(--ink); }
-.tap-hint { text-align: center; font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
-
-/* Story ready banner */
-.story-ready-banner { background: #f0fdf4; border: 2px solid #86efac; border-radius: 14px; padding: 1rem 1.25rem; text-align: center; margin-bottom: 1rem; font-family: 'Baloo 2', cursive; font-size: 1.1rem; font-weight: 700; color: #16a34a; animation: popIn 0.4s ease; display: none; }
-
-/* Story output */
-.story-output { background: var(--card); border: 1.5px solid var(--border); border-radius: 20px; padding: 2rem; margin-bottom: 1.25rem; box-shadow: 0 2px 16px rgba(0,0,0,0.07); animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
-.story-output-header { text-align: center; margin-bottom: 1.5rem; }
-.story-badge { display: inline-block; background: #fff7ed; border: 1.5px solid #fed7aa; color: var(--accent1); border-radius: 50px; padding: 4px 14px; font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.75rem; }
-.story-main-title { font-family: 'Baloo 2', cursive; font-size: 1.8rem; font-weight: 800; color: var(--ink); line-height: 1.2; margin-bottom: 0.25rem; }
-.story-author { color: var(--muted); font-size: 0.9rem; }
-.story-divider { border: none; border-top: 1.5px solid var(--border); margin: 1.25rem 0; }
-.story-body { font-size: 1.08rem; line-height: 1.85; color: var(--ink); }
-.story-body p { margin-bottom: 1rem; }
-.story-body p:last-child { margin-bottom: 0; }
-.story-highlight { font-weight: 700; color: var(--accent2); }
-.action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 0.5rem; }
-.action-btn { border: 2px solid var(--border); border-radius: 14px; padding: 0.8rem; font-family: 'Baloo 2', cursive; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center; }
-.action-btn.primary { background: var(--accent2); border-color: var(--accent2); color: white; box-shadow: 0 4px 14px rgba(139,92,246,0.3); }
-.action-btn.primary:hover { background: #7c3aed; transform: translateY(-2px); }
-.action-btn.secondary { background: var(--bg); color: var(--ink); }
-.action-btn.secondary:hover { border-color: var(--accent1); transform: translateY(-2px); }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#fdf6ee;--card:#fff;--ink:#2d2013;--mu:#8a7560;--bd:#e8ddd0;--or:#f97316;--pu:#8b5cf6;--gr:#10b981;--selbg:#fff7ed}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+#app{max-width:720px;margin:0 auto;padding:1.75rem 1rem 4rem}
+.top{text-align:center;margin-bottom:1.75rem}
+h1{font-family:'Baloo 2',cursive;font-size:2rem;font-weight:800;color:var(--ink)}
+h1 span{color:var(--or)}
+.sub{color:var(--mu);font-size:.95rem;margin-top:.3rem}
+.steps-row{display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;gap:0}
+.dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--bd);background:var(--card);display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',cursive;font-weight:700;font-size:.8rem;color:var(--mu);flex-shrink:0;transition:all .3s}
+.dot.active{background:var(--or);border-color:var(--or);color:#fff;transform:scale(1.15)}
+.dot.done{background:var(--gr);border-color:var(--gr);color:#fff}
+.dline{height:2px;width:24px;background:var(--bd);flex-shrink:0;transition:background .3s}
+.dline.done{background:var(--gr)}
+.sbar{background:var(--card);border:1.5px solid var(--bd);border-radius:12px;padding:.75rem 1.1rem;margin-bottom:1rem;display:none;flex-wrap:wrap;gap:6px}
+.chip{background:var(--bg);border:1.5px solid var(--bd);border-radius:50px;padding:3px 11px;font-size:.8rem;font-weight:600;color:var(--mu)}
+.chip b{color:var(--ink)}
+.card{background:var(--card);border:1.5px solid var(--bd);border-radius:18px;padding:1.6rem;margin-bottom:1rem;animation:pop .38s cubic-bezier(.34,1.56,.64,1);box-shadow:0 2px 10px rgba(0,0,0,.05)}
+@keyframes pop{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.ey{font-size:.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--or);margin-bottom:.35rem}
+.qu{font-family:'Baloo 2',cursive;font-size:1.35rem;font-weight:700;color:var(--ink);margin-bottom:1.1rem;line-height:1.3}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:9px}
+.cbtn{background:var(--bg);border:2px solid var(--bd);border-radius:13px;padding:.85rem .6rem;cursor:pointer;text-align:center;display:flex;flex-direction:column;align-items:center;gap:5px;transition:all .18s;font-family:'Nunito',sans-serif}
+.cbtn:hover{border-color:var(--or);transform:translateY(-2px);box-shadow:0 4px 12px rgba(249,115,22,.13)}
+.cbtn.sel{background:var(--selbg);border-color:var(--or);box-shadow:0 0 0 3px rgba(249,115,22,.18);transform:translateY(-2px)}
+.ce{font-size:1.9rem;line-height:1}
+.cl{font-family:'Baloo 2',cursive;font-weight:700;font-size:.87rem;color:var(--ink);line-height:1.2}
+.nbtn{display:block;width:100%;margin-top:.9rem;background:var(--or);color:#fff;border:none;border-radius:13px;padding:.9rem;font-family:'Baloo 2',cursive;font-size:1.15rem;font-weight:700;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px rgba(249,115,22,.32)}
+.nbtn:hover{background:#ea6c0a;transform:translateY(-2px)}
+.nbtn:disabled{background:#d1c4b8;box-shadow:none;cursor:not-allowed;transform:none}
+.gscreen{background:var(--card);border:1.5px solid var(--bd);border-radius:18px;padding:1.4rem;margin-bottom:1rem;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.gtop{text-align:center;margin-bottom:.8rem}
+.gtitle{font-family:'Baloo 2',cursive;font-size:1.15rem;font-weight:700;color:var(--ink)}
+.gsub{color:var(--mu);font-size:.85rem;margin-top:.15rem}
+.wdots::after{content:'';animation:wd 1.5s steps(4,end) infinite}
+@keyframes wd{0%,100%{content:''}25%{content:'.'}50%{content:'..'}75%{content:'...'}}
+#gc{display:block;width:100%;border-radius:12px;border:2px solid var(--bd);cursor:pointer;touch-action:manipulation}
+.gscores{display:flex;justify-content:space-between;margin-top:.4rem;font-family:'Baloo 2',cursive;font-size:.88rem;color:var(--mu)}
+.gscores span{font-weight:700;color:var(--ink)}
+.ready-banner{background:#f0fdf4;border:2px solid #86efac;border-radius:13px;padding:.9rem 1.1rem;text-align:center;margin-bottom:1rem;font-family:'Baloo 2',cursive;font-size:1.05rem;font-weight:700;color:#16a34a;display:none;animation:pop .4s ease}
+.story-card{background:var(--card);border:1.5px solid var(--bd);border-radius:18px;padding:1.75rem;margin-bottom:1rem;box-shadow:0 2px 14px rgba(0,0,0,.06);animation:pop .5s cubic-bezier(.34,1.56,.64,1)}
+.sbadge{display:inline-block;background:#fff7ed;border:1.5px solid #fed7aa;color:var(--or);border-radius:50px;padding:3px 13px;font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:.65rem}
+.stitle{font-family:'Baloo 2',cursive;font-size:1.65rem;font-weight:800;color:var(--ink);line-height:1.2;margin-bottom:.2rem}
+.sauthor{color:var(--mu);font-size:.88rem;margin-bottom:1rem}
+.sdiv{border:none;border-top:1.5px solid var(--bd);margin:1rem 0}
+.sbody{font-size:1.05rem;line-height:1.85;color:var(--ink)}
+.sbody p{margin-bottom:.95rem}
+.sbody p:last-child{margin-bottom:0}
+.hi{font-weight:700;color:var(--pu)}
+.arow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.5rem}
+.abtn{border:2px solid var(--bd);border-radius:13px;padding:.78rem;font-family:'Baloo 2',cursive;font-size:.98rem;font-weight:700;cursor:pointer;transition:all .2s;text-align:center}
+.abtn.p{background:var(--pu);border-color:var(--pu);color:#fff;box-shadow:0 4px 14px rgba(139,92,246,.28)}
+.abtn.p:hover{background:#7c3aed;transform:translateY(-2px)}
+.abtn.s{background:var(--bg);color:var(--ink)}
+.abtn.s:hover{border-color:var(--or);transform:translateY(-2px)}
+.name-row{display:flex;gap:10px;align-items:center;margin-bottom:1rem;flex-wrap:wrap}
+.name-row input{flex:1;min-width:160px;border:2px solid var(--bd);border-radius:11px;padding:.65rem 1rem;font-family:'Baloo 2',cursive;font-size:1rem;font-weight:600;color:var(--ink);background:var(--bg);outline:none;transition:border-color .2s}
+.name-row input:focus{border-color:var(--or)}
+.name-row input::placeholder{color:#c9b99e;font-weight:400}
 </style>
 </head>
 <body>
 <div id="app">
-  <div class="top-bar">
-    <div class="app-title">✨ My <span>Story Builder</span></div>
-    <div class="app-subtitle">Make your choices — then read your very own story!</div>
+  <div class="top">
+    <h1>✨ My <span>Story Builder</span></h1>
+    <p class="sub">Make 4 choices — then read your very own story!</p>
   </div>
-  <div id="stepsRow" class="steps-row"></div>
-  <div id="summaryBar" class="summary-bar" style="display:none"></div>
-  <div id="mainArea"></div>
+  <div class="steps-row" id="stepsRow"></div>
+  <div class="sbar" id="sbar"></div>
+  <div id="main"></div>
 </div>
 
 <script>
-const steps = [
-  { id:'name', eyebrow:'Step 1 of 7', question:"What is your hero's name?", type:'text', placeholder:'Type a name here...' },
-  { id:'character', eyebrow:'Step 2 of 7', question:'What kind of character are they?', type:'choice', choices:[
-    {emoji:'🧙',label:'Wizard'},{emoji:'🤖',label:'Robot'},{emoji:'🦊',label:'Talking fox'},
-    {emoji:'🧚',label:'Fairy'},{emoji:'🐉',label:'Tiny dragon'},{emoji:'🏄',label:'Surfer kid'},
-    {emoji:'🦕',label:'Dinosaur'},{emoji:'👩‍🚀',label:'Astronaut'}
+const stories = {
+  "Wizard|Jungle island|A stolen gem|A big celebration":{
+    title:"{name} and the Crystal Gem of the Jungle",
+    body:[
+      "Deep in the tangled jungle, a brave wizard named {name} discovered something terrible — the ancient Crystal Gem had been stolen right from its golden pedestal! Without it, the jungle plants were slowly turning grey. {name} grabbed a wooden staff and set off through the thick vines without a moment to waste.",
+      "Strange creatures peered through the leaves as {name} followed muddy footprints deeper into the jungle. At last, {name} reached a hidden waterfall — and behind it sat a sneaky jungle sprite, clutching the glowing gem. {name} took a deep breath and cast a spectacular rainbow spell, filling the whole cave with dazzling colour.",
+      "The sprite blinked in amazement. It had never seen anything so beautiful! Slowly, it held out the gem. {name} smiled and promised to teach the sprite more magic — and the sprite promised never to steal again. The moment {name} returned the gem to its pedestal, every flower in the jungle burst into bloom at once.",
+      "That evening, all the jungle animals gathered for the biggest celebration the jungle had ever seen. Parrots sang, monkeys danced, and fireflies lit up the sky like tiny stars. {name} sat in the middle of it all, laughing and munching on the juiciest mango in the whole jungle!"
+    ]
+  },
+  "Wizard|Jungle island|A stolen gem|Making a new friend":{
+    title:"{name} and the Lonely Jungle Thief",
+    body:[
+      "The jungle was in trouble. Someone had snatched the Crystal Gem, and without it the rivers were running dry. {name}, a young wizard with a wonky hat and a very big heart, marched into the jungle with a trusty spell book tucked under one arm.",
+      "After squeezing through thorny bushes and tiptoeing over a very grumpy crocodile, {name} found the culprit — a small scruffy monkey sitting on a mossy log, hugging the gem tightly. The monkey didn't look sneaky. It looked lonely. {name} sat down quietly beside it.",
+      "The monkey explained in sad little squeaks that it had taken the gem only because it glowed, and glowing things made it feel less scared of the dark. {name} thought carefully, then conjured a tiny glowing orb — a magical night-light just for the monkey. Its eyes went wide with wonder, and it handed back the gem straight away.",
+      "From that day on, {name} and the little monkey were the best of friends. They explored the jungle every day, and every night the magical orb glowed softly in the monkey's tree. The jungle thrived, and neither of them was ever lonely again."
+    ]
+  },
+  "Wizard|Jungle island|Everyone fell asleep|Becoming a hero":{
+    title:"{name} Wakes the Sleeping Jungle",
+    body:[
+      "A strange enchanted pollen was drifting through the jungle, sending everything it touched into a deep magical sleep. The butterflies, the monkeys, even the trees — all snoring. Only {name} had been flying too fast on a broomstick for the pollen to catch. \"Right,\" said {name}, landing with a thud. \"It's up to me.\"",
+      "Following the drifting clouds of pollen, {name} discovered the source — an ancient sneezing flower as big as a house, hiccupping sleep-dust with every sneeze. It wasn't being mean. It had a terrible cold. {name} searched a pile of old scrolls and found a recipe for magical ginger tea.",
+      "It took {name} three hours to brew the tea in a giant leaf-bowl. Then {name} carefully poured it into the flower's roots. Slowly, the sneezing stopped. The pollen cleared. One by one, the animals blinked awake — confused, yawning, and covered in leaf-shapes from where they'd fallen.",
+      "When the jungle elder — an enormous ancient tortoise — declared {name} a Jungle Hero, every creature cheered so loudly that mangoes fell from the trees. {name} glowed with pride and bowed very, very carefully."
+    ]
+  },
+  "Wizard|Jungle island|A monster is lost|A funny surprise":{
+    title:"{name} and the Very Confused Jungle Monster",
+    body:[
+      "A distress call echoed through the jungle — a huge green monster had wandered in and was completely lost, crashing through the trees and accidentally sitting on huts. {name}, the most enthusiastic (if slightly clumsy) wizard around, set off immediately. Armed with a spell book that kept blowing open to the wrong page, {name} tripped and stumbled deeper into the jungle.",
+      "After accidentally turning three frogs bright pink and making a tree sneeze glitter, {name} found the monster. It was enormous, and it had somehow got a banana tree stuck on its head like a very leafy hat. The monster looked deeply embarrassed.",
+      "{name} tried a navigation spell to help the monster find its home — but fumbled the words and turned the monster into a briefly very confused giant tortoise. The spell wore off in seconds. The monster blinked. The banana tree was still on its head.",
+      "Eventually {name} walked the monster safely home using a hand-drawn map, three wrong turns, and a great deal of patience. By the time they arrived, the jungle animals were already re-enacting the story of the giant tortoise monster. {name} laughed the loudest of all."
+    ]
+  },
+  "Wizard|Outer space|A stolen gem|A big celebration":{
+    title:"{name} and the Star Gem of the Galaxy",
+    body:[
+      "The Star Gem — the most precious jewel in all the galaxy — had been stolen from its display case aboard the Space Station, and without it, every planet in the system began to grow cold. {name} fired up a rocket broomstick and zoomed off into the stars to find it.",
+      "The trail of stardust led {name} past sleeping asteroids and through a glittery nebula that smelled of cinnamon. At the edge of the galaxy, {name} found the gem — in the hands of a young alien who had taken it simply because it sparkled, and sparkly things made it happy.",
+      "{name} explained very patiently that gems are not for collecting when everyone needs them. The alien looked embarrassed and immediately held it out. {name} thanked it kindly, promised to bring it something sparkly of its own one day, and zoomed the gem home.",
+      "Every civilisation in the galaxy threw a party on the same night. {name} was the guest of honour at all of them — which required a great deal of teleporting — and danced in zero gravity until the stars began to dim for morning."
+    ]
+  },
+  "Wizard|Outer space|The sun has vanished|Making a new friend":{
+    title:"{name} and the Star Collector",
+    body:[
+      "The galaxy woke up to darkness. The sun had vanished, and every planet sat cold and confused. {name}, a quick-thinking space wizard, fired up a rocket broomstick and followed the faintest trail of warmth across the stars to find it.",
+      "After two meteor showers and a rather rude black hole, {name} discovered the sun crammed inside a glass dome on a tiny, lonely planet. Beside it was a small alien with six arms and the saddest expression {name} had ever seen. The alien had taken the sun because its planet had no light and it was terribly lonely.",
+      "{name} sat with the alien for a long time. Then {name} cast a special spell — splitting off a small personal star, just bright enough to light one little planet. The alien's eyes filled with happy tears. The sun was released and rolled back into its rightful place across the sky.",
+      "Now {name} visits the alien's glowing planet every month. They sit under their little star, share snacks from across the galaxy, and watch the distant suns sparkle. Neither of them is lonely any more."
+    ]
+  },
+  "Wizard|Outer space|Everyone fell asleep|Becoming a hero":{
+    title:"The Wizard Who Woke the Galaxy",
+    body:[
+      "A magical sleep mist was spreading across the galaxy, sending every creature it touched into a deep snoring slumber. Planet by planet, everything went quiet. {name} was the only one left awake, floating alone in the space station. \"Right,\" said {name}. \"It's up to me.\"",
+      "Following the mist back to its source meant dodging sleeping space whales, navigating through snoring satellites, and very carefully stepping over an enormous sleeping robot on Planet Krix-9. At the centre of it all was an ancient spell clock — ticking down to zero.",
+      "{name} studied the clock carefully, flipped through every page of the wizard's almanac, and with ten seconds to spare, reversed the spell. A wave of golden light rippled across the galaxy. One by one, creatures stirred, blinked, and woke up.",
+      "From the smallest moon mouse to the tallest galactic giant, every living thing knew the name {name}. Songs were written, statues were carved, and a whole new constellation was shaped in {name}'s honour — visible from every planet on the clearest nights."
+    ]
+  },
+  "Wizard|Outer space|A monster is lost|A funny surprise":{
+    title:"{name} and the Very Lost Space Monster",
+    body:[
+      "The distress beacon came from near the Rings of Zarblox. {name}, space wizard extraordinaire, steered toward the signal and found something unexpected — a gigantic purple monster floating in space, wrapped in its own tentacles and spinning very slowly. It had a deeply embarrassed look on all four of its faces.",
+      "The monster explained (in honks that {name}'s translator struggled with) that it had gotten dizzy in a meteor shower and forgotten which way was home. {name} tried to use the star map — but the monster kept accidentally sitting on it.",
+      "After three wrong turns, a trip through a wormhole that deposited them briefly in someone's bathroom on Pluto-Minor, and a very confusing argument with a satellite, {name} finally navigated the monster safely home. The monster's family came rushing out — all forty-seven of them.",
+      "They threw {name} a surprise party on the spot, right there in space. It was chaotic, extremely loud, and someone sat on the rocket broomstick. {name} laughed until the space suit fogged up entirely."
+    ]
+  },
+  "Dragon|Magic kingdom|A stolen gem|A big celebration":{
+    title:"{name} and the Royal Gem",
+    body:[
+      "The Royal Gem had been stolen from the castle tower, and every knight had failed to find it. That was when {name} — a small but fiercely determined dragon — volunteered to try. {name} had an excellent nose for sparkly things and followed the trail of glittery footprints straight into the Whispering Forest.",
+      "Deep in the forest, {name} found the culprit — not a villain, but a young magpie who had taken the gem because it caught the light beautifully. The magpie hadn't meant any harm. It simply loved shiny things more than anything.",
+      "{name} explained gently why the gem was so important to the whole kingdom, and offered to find the magpie something just as beautiful to keep. The magpie handed it over with a small, apologetic chirp. {name} flew it straight back to the castle and placed it in the king's hands.",
+      "The kingdom celebrated for three whole days. There were feasts, fireworks, and a parade where {name} flew overhead showering golden sparks across the cheering crowd. It was, everyone agreed, the very best party the kingdom had ever seen!"
+    ]
+  },
+  "Dragon|Magic kingdom|The sun has vanished|Making a new friend":{
+    title:"{name} and the Stolen Sunshine",
+    body:[
+      "The magic kingdom had gone dark overnight. No warmth, no light, no golden mornings — just cold grey sky. The king called for the bravest dragon in the land, and {name} stepped forward. {name} had always wanted to go on a proper quest.",
+      "Flying high above the clouds, {name} followed the last traces of sunlight to a mountain of frozen cloud. There sat a mischievous weather witch, who had bottled the sun to use as a reading lamp because her candles kept blowing out.",
+      "{name} didn't breathe fire at the witch. Instead, {name} landed carefully and asked to sit beside her. They talked for a long time. {name} showed her how dragon fire could burn so steadily it would never be blown out. The witch's eyes lit up — she handed over the sun jar immediately.",
+      "{name} released the sun back into the sky, and the witch visited the kingdom every week after that. She and {name} would sit together watching sunsets — two unlikely friends who had both been a little lonely before they met."
+    ]
+  },
+  "Dragon|Jungle island|Everyone fell asleep|Becoming a hero":{
+    title:"{name} Saves the Sleeping Jungle",
+    body:[
+      "It started with the butterflies — they folded their wings mid-flutter and drifted to the ground, fast asleep. Then the monkeys, the toucans, the trees themselves. A strange enchanted pollen was drifting through the jungle air. Only {name}, a dragon who breathed through their mouth, was safe. {name} set off to find the source.",
+      "Deep in the jungle, the pollen led to an ancient sneezing flower as big as a house, hiccupping clouds of sleep-dust with every sneeze. It had a terrible cold. {name} searched through old jungle scrolls and found a recipe for magical ginger tea — the cure for flower colds.",
+      "Three hours of careful fire-brewing later, {name} poured the tea into the flower's roots. The sneezing stopped. The pollen cleared. All across the jungle, animals blinked awake, confused and yawning, covered in the leaf-shapes from where they'd fallen.",
+      "When the jungle elder — an enormous ancient tortoise — declared {name} a Jungle Hero, every creature cheered so loudly that fruit fell from every tree. {name} glowed with pride, accidentally lit a small bush on fire (which was quickly put out), and bowed very carefully."
+    ]
+  },
+  "Dragon|Underwater city|A monster is lost|A funny surprise":{
+    title:"{name} and the Upside-Down Sea Serpent",
+    body:[
+      "The underwater city of Coralia was in a panic. A gigantic sea serpent had wandered in from the deep ocean and was completely lost, swimming in nervous circles through the market and knocking over stalls with its enormous tail. The mayor begged for help. {name} — a water-breathing dragon with excellent navigation skills — dove straight in.",
+      "Finding the serpent was easy. It was the biggest creature in the city, and it was wearing a fruit stall on its head like a very fancy hat. {name} swam up calmly. The serpent, it turned out, had been following what it thought was a map — but which was actually a shopping list someone had dropped in the ocean.",
+      "{name} studied the sea-stars and currents, worked out exactly where the serpent's home was, and led it all the way there — the serpent following carefully, still wearing the fruit stall.",
+      "Back in Coralia, the mayor declared {name} a hero. Then found a pineapple in the fountain, a bunch of kelp in the library, and a startled lobster on the mayor's own chair. The city laughed about it for years, and whenever anything went missing, someone always said — \"Must have been the serpent.\""
+    ]
+  },
+  "Fairy|Magic kingdom|Everyone fell asleep|A big celebration":{
+    title:"{name} and the Lullaby Disaster",
+    body:[
+      "It was the quietest morning the magic kingdom had ever known — because everyone in it was fast asleep. The baker had fallen face-first into a loaf. The guards were snoring at their posts. Even the king was slumped on his throne, crown over one ear. Only {name}, a quick little fairy, had been flying too fast for the sleeping spell to catch.",
+      "{name} traced the spell to its source: a dusty old music box in the castle attic, wound up by accident, playing a magical lullaby on endless loop. {name} tried to reach the winding key — but it was too high, and {name} was too small.",
+      "Thinking fast, {name} gathered dandelion seeds, threaded them into a tiny rope, looped it around the key, and pulled with every bit of fairy strength available. The music box clicked to a stop mid-note. A warm golden wave washed over the kingdom. Everyone woke at the exact same moment.",
+      "Nobody could explain why they'd been asleep — but when they found out it was {name} who'd saved them, the whole kingdom threw a party that lasted three glorious days. {name} danced the longest of anyone, zooming between the lanterns as fireworks crackled overhead."
+    ]
+  },
+  "Fairy|Underwater city|A stolen gem|Becoming a hero":{
+    title:"{name} and the Pearl of Coralia",
+    body:[
+      "The Great Pearl had vanished from the heart of Coralia, the shimmering underwater city, and without it the city's lights were growing dim. {name}, a tiny fairy who had recently discovered she could breathe underwater (a useful surprise), fluttered down through the ocean waves to help.",
+      "The trail of glowing oyster-dust led {name} to the Ink Caves — dark twisting tunnels filled with swirling shadows. {name} wasn't sure she was brave enough. But someone had to go in, so in she went, holding her wand like a torch, pushing back the dark inch by inch.",
+      "At the deepest point of the cave, {name} found the Pearl sitting on a rock — and beside it, a very old blind octopus who had mistaken it for an egg he'd been faithfully sitting on for thirty years. {name} explained the mix-up gently, gave the octopus a warm hug, and carried the Pearl carefully back to the city.",
+      "As {name} returned the Pearl to its place, all of Coralia blazed back into brilliant colour. The mer-people swam in joyful circles. The mayor placed a tiny coral crown on {name}'s head and declared her the smallest — and greatest — hero the underwater city had ever known."
+    ]
+  },
+  "Robot|Outer space|A monster is lost|A big celebration":{
+    title:"{name} and the Gentle Giant",
+    body:[
+      "{name} was a small but very capable robot, zooming between planets on a routine maintenance check, when a distress signal came through. A space monster — enormous, purple, with seventeen tentacles — had gotten separated from its family and was drifting alone in an asteroid field, beeping sadly.",
+      "{name} pulled up beside it. The monster was bigger than {name}'s entire ship, but it had curled up small and was trying to make itself as little as possible. {name} opened the communication channel and made a friendly beeping sound. The monster beeped back. They didn't speak the same language, but somehow understood each other perfectly.",
+      "{name} ran seventeen star charts and cross-referenced every known monster migration route. Three calculations and one sneaky shortcut through a nebula later, {name} had found the monster's family pod, waiting anxiously near the twin moons of Beryx.",
+      "The reunion was extraordinary — the monster family made a sound like seventy foghorns and wrapped their tentacles around each other in the most enormous hug {name} had ever seen. They wrapped one tentacle gently around {name}'s ship too. That night the monster family performed their traditional celebration dance around the moons, and {name} watched every joyful minute."
+    ]
+  },
+  "Robot|Underwater city|The sun has vanished|A funny surprise":{
+    title:"{name} and the Submarine Sun",
+    body:[
+      "{name} was a waterproof robot — fortunately — because the moment the sun disappeared and plunged everything into darkness, {name} dived straight into the ocean to investigate. Satellites had tracked the last position of the sun somewhere near the Coralia Trench, which was very deep and very strange.",
+      "Descending through the dark water, {name}'s sensors picked up something extraordinary — a warm glow coming from far below. At the bottom of the trench, the sun had rolled in through an underwater volcano and was sitting on the ocean floor, looking confused and slightly damp.",
+      "Getting the sun back to the sky was a significant engineering challenge. {name} rigged up a pulley system using anchor chains, kelp conveyor belts, and one extremely obliging whale. After forty-five minutes, two miscalculations, and one incident involving a very startled crab, the sun slowly rose back through the water and popped into the sky.",
+      "The sun, it later emerged, had simply slipped. It was extremely embarrassing for everyone involved, and the sun refused to discuss it. {name} became famous across the galaxy as the robot who used a whale to put the sun back — a story that grew more elaborate with every single retelling."
+    ]
+  }
+};
+
+const stepDefs=[
+  {id:'character',ey:'Step 1 of 4',qu:'What kind of hero are you?',choices:[
+    {e:'🧙',l:'Wizard'},{e:'🤖',l:'Robot'},{e:'🐉',l:'Dragon'},{e:'🧚',l:'Fairy'}
   ]},
-  { id:'theme', eyebrow:'Step 3 of 7', question:'What world does the story happen in?', type:'choice', choices:[
-    {emoji:'🏰',label:'Magic kingdom'},{emoji:'🌊',label:'Underwater city'},{emoji:'🚀',label:'Outer space'},
-    {emoji:'🌴',label:'Jungle island'},{emoji:'🏙️',label:'Futuristic city'},{emoji:'🍄',label:'Enchanted forest'},
-    {emoji:'🏜️',label:'Australian outback'},{emoji:'❄️',label:'Frozen land'}
+  {id:'world',ey:'Step 2 of 4',qu:'Where does the adventure happen?',choices:[
+    {e:'🌴',l:'Jungle island'},{e:'🚀',l:'Outer space'},{e:'🏰',l:'Magic kingdom'},{e:'🌊',l:'Underwater city'}
   ]},
-  { id:'setting', eyebrow:'Step 4 of 7', question:'Where does the big adventure start?', type:'choice', choices:[
-    {emoji:'🗼',label:'A tall tower'},{emoji:'🌋',label:'A volcano'},{emoji:'🛸',label:'A spaceship'},
-    {emoji:'🏚️',label:'A hidden cave'},{emoji:'🌈',label:'A rainbow bridge'},{emoji:'🌀',label:'A swirling portal'},
-    {emoji:'🎪',label:'A travelling fair'},{emoji:'🌳',label:'A giant tree'}
+  {id:'problem',ey:'Step 3 of 4',qu:'What is the big problem to solve?',choices:[
+    {e:'💎',l:'A stolen gem'},{e:'🌑',l:'The sun has vanished'},{e:'😴',l:'Everyone fell asleep'},{e:'👾',l:'A monster is lost'}
   ]},
-  { id:'problem', eyebrow:'Step 5 of 7', question:'What is the big problem to solve?', type:'choice', choices:[
-    {emoji:'🌑',label:'The sun has vanished'},{emoji:'😴',label:'Everyone fell asleep'},
-    {emoji:'🗺️',label:'A map leads to danger'},{emoji:'🔐',label:'A door no one can open'},
-    {emoji:'👾',label:'A monster is lost'},{emoji:'💎',label:'A stolen gem'},
-    {emoji:'🌧️',label:"It won't stop raining"},{emoji:'🤫',label:'A mysterious secret'}
-  ]},
-  { id:'ending', eyebrow:'Step 6 of 7', question:'How does your story end?', type:'choice', choices:[
-    {emoji:'🎉',label:'A big celebration'},{emoji:'🤝',label:'Making a new friend'},
-    {emoji:'🏠',label:'Getting back home'},{emoji:'🌟',label:'Becoming a hero'},
-    {emoji:'🧩',label:'Solving the mystery'},{emoji:'🕊️',label:'Bringing peace'},
-    {emoji:'😂',label:'A funny surprise'},{emoji:'🌅',label:'A new journey begins'}
-  ]},
-  { id:'length', eyebrow:'Step 7 of 7', question:'How long should your story be?', type:'length' }
+  {id:'ending',ey:'Step 4 of 4',qu:'How does your story end?',choices:[
+    {e:'🎉',l:'A big celebration'},{e:'🤝',l:'Making a new friend'},{e:'🌟',l:'Becoming a hero'},{e:'😂',l:'A funny surprise'}
+  ]}
 ];
 
-let currentStep = 0;
-let answers = {};
-let storyReady = false;
-let activeRaf = null;
+let step=0,ans={},activeRaf=null;
 
-function renderStepDots() {
-  const row = document.getElementById('stepsRow');
-  row.innerHTML = '';
-  steps.forEach((s,i) => {
-    const dot = document.createElement('div');
-    dot.className = 'step-dot'+(i===currentStep?' active':i<currentStep?' done':'');
-    dot.textContent = i<currentStep?'✓':i+1;
-    row.appendChild(dot);
-    if(i<steps.length-1){
-      const line = document.createElement('div');
-      line.className = 'step-line'+(i<currentStep?' done':'');
-      row.appendChild(line);
-    }
-  });
+function dots(){
+  const r=document.getElementById('stepsRow');r.innerHTML='';
+  for(let i=0;i<4;i++){
+    const d=document.createElement('div');
+    d.className='dot'+(i===step?' active':i<step?' done':'');
+    d.textContent=i<step?'✓':i+1;r.appendChild(d);
+    if(i<3){const l=document.createElement('div');l.className='dline'+(i<step?' done':'');r.appendChild(l);}
+  }
 }
 
-function renderSummaryBar() {
-  const bar = document.getElementById('summaryBar');
-  if(Object.keys(answers).length===0){bar.style.display='none';return;}
-  bar.style.display='flex';
-  const labels={name:'🦸 Hero',character:'🎭 Type',theme:'🌍 World',setting:'📍 Start',problem:'⚡ Problem',ending:'🏁 Ending',length:'📖 Length'};
-  bar.innerHTML=Object.entries(answers).map(([k,v])=>{
-    const val=typeof v==='object'?v.label:v;
-    return `<div class="summary-chip">${labels[k]||k}: <span class="chip-val">${val}</span></div>`;
-  }).join('');
+function updateSbar(){
+  const b=document.getElementById('sbar');
+  const labels={character:'🎭',world:'🌍',problem:'⚡',ending:'🏁'};
+  const keys=Object.keys(ans);
+  if(!keys.length){b.style.display='none';return;}
+  b.style.display='flex';
+  b.innerHTML=keys.map(k=>`<div class="chip">${labels[k]} <b>${ans[k]}</b></div>`).join('');
 }
 
-function renderStep() {
-  renderStepDots();
-  renderSummaryBar();
-  const step = steps[currentStep];
-  const area = document.getElementById('mainArea');
+function render(){
+  dots();updateSbar();
+  const s=stepDefs[step];
+  document.getElementById('main').innerHTML=`<div class="card">
+    <div class="ey">${s.ey}</div>
+    <div class="qu">${s.qu}</div>
+    <div class="cgrid">
+      ${s.choices.map((c,i)=>`<button class="cbtn${ans[s.id]===c.l?' sel':''}" onclick="pick(${i})">
+        <span class="ce">${c.e}</span><span class="cl">${c.l}</span>
+      </button>`).join('')}
+    </div>
+    <button class="nbtn" id="nb" onclick="next()" ${!ans[s.id]?'disabled':''}>
+      ${step===3?'Build my story! ✨':'Next →'}
+    </button>
+  </div>`;
+}
 
-  if(step.type==='text') {
-    area.innerHTML=`<div class="step-card">
-      <div class="step-eyebrow">${step.eyebrow}</div>
-      <div class="step-question">${step.question}</div>
-      <input class="name-input" type="text" id="nameInput" placeholder="${step.placeholder}" maxlength="20" value="${answers.name||''}" />
-      <button class="next-btn" onclick="advanceText()" style="margin-top:1.25rem">Next →</button>
-    </div>`;
-    const inp=document.getElementById('nameInput');
-    inp.addEventListener('keydown',e=>{if(e.key==='Enter')advanceText();});
-    inp.focus();
+function pick(i){
+  const s=stepDefs[step];
+  ans[s.id]=s.choices[i].l;
+  document.querySelectorAll('.cbtn').forEach((b,j)=>b.className='cbtn'+(j===i?' sel':''));
+  document.getElementById('nb').disabled=false;
+}
 
-  } else if(step.type==='length') {
-    const sel=answers.length;
-    area.innerHTML=`<div class="step-card">
-      <div class="step-eyebrow">${step.eyebrow}</div>
-      <div class="step-question">${step.question}</div>
-      <div class="length-grid">
-        <div class="length-card ${sel&&sel.paragraphs===2?'selected':''}" onclick="selectLength('short')">
-          <span class="length-card-emoji">⚡</span>
-          <div class="length-card-title">Short story</div>
-          <div class="length-card-desc">2 paragraphs — quick and punchy!</div>
+function next(){
+  if(!ans[stepDefs[step].id])return;
+  step++;
+  if(step>=4){showLoading();}else{render();}
+}
+
+function showLoading(){
+  dots();updateSbar();
+  document.getElementById('main').innerHTML=`
+    <div id="readyBanner" class="ready-banner">🎉 Your story is ready! Scroll down to put in your name!</div>
+    <div class="gscreen">
+      <div class="gtop">
+        <div class="gtitle">Building your story<span class="wdots"></span></div>
+        <div class="gsub">Play the jumping game while you wait!</div>
+      </div>
+      <div style="text-align:center;font-family:'Baloo 2',cursive;font-size:.9rem;color:var(--mu);margin-bottom:.45rem">Tap the game or press SPACE to jump!</div>
+      <canvas id="gc" style="height:155px"></canvas>
+      <div class="gscores">Score: <span id="gs">0</span><span style="opacity:.4">|</span>Best: <span id="gb">0</span></div>
+    </div>
+    <div id="nameArea" style="display:none">
+      <div class="card">
+        <div class="ey">Almost there!</div>
+        <div class="qu">What is your hero's name?</div>
+        <div class="name-row">
+          <input type="text" id="heroName" placeholder="Type your name here..." maxlength="20" />
+          <button class="nbtn" style="margin-top:0;width:auto;padding:.65rem 1.25rem;white-space:nowrap" onclick="showStory()">Read my story! 📖</button>
         </div>
-        <div class="length-card ${sel&&sel.paragraphs===4?'selected':''}" onclick="selectLength('long')">
-          <span class="length-card-emoji">📚</span>
-          <div class="length-card-title">Long story</div>
-          <div class="length-card-desc">4 paragraphs — full of detail!</div>
-        </div>
-      </div>
-      <button class="next-btn" id="nextBtn" onclick="advanceChoice()" ${!answers.length?'disabled':''} style="margin-top:1.25rem">Build my story! ✨</button>
-    </div>`;
-
-  } else {
-    area.innerHTML=`<div class="step-card">
-      <div class="step-eyebrow">${step.eyebrow}</div>
-      <div class="step-question">${step.question}</div>
-      <div class="choices-grid">
-        ${step.choices.map((c,i)=>`
-          <button class="choice-btn ${answers[step.id]&&answers[step.id].label===c.label?'selected':''}" onclick="selectChoice(${i})">
-            <span class="choice-emoji">${c.emoji}</span>
-            <span class="choice-label">${c.label}</span>
-          </button>`).join('')}
-      </div>
-      <button class="next-btn" id="nextBtn" onclick="advanceChoice()" ${!answers[step.id]?'disabled':''} style="margin-top:1.25rem">Next →</button>
-    </div>`;
-  }
-}
-
-function selectLength(val) {
-  answers.length = val==='short'?{label:'Short story',paragraphs:2}:{label:'Long story',paragraphs:4};
-  document.querySelectorAll('.length-card').forEach((c,i)=>{
-    c.className='length-card'+(i===(val==='short'?0:1)?' selected':'');
-  });
-  document.getElementById('nextBtn').disabled=false;
-}
-
-function selectChoice(idx) {
-  const step=steps[currentStep];
-  answers[step.id]=step.choices[idx];
-  document.querySelectorAll('.choice-btn').forEach((b,i)=>b.className='choice-btn'+(i===idx?' selected':''));
-  document.getElementById('nextBtn').disabled=false;
-}
-
-function advanceText() {
-  const val=document.getElementById('nameInput').value.trim();
-  if(!val){document.getElementById('nameInput').style.borderColor='#f97316';return;}
-  answers.name=val; currentStep++; renderStep();
-}
-
-function advanceChoice() {
-  const step=steps[currentStep];
-  if(step.type==='length'&&!answers.length)return;
-  if(step.type==='choice'&&!answers[step.id])return;
-  currentStep++;
-  if(currentStep>=steps.length){buildStory();}else{renderStep();}
-}
-
-/* ===== JUMP GAME ===== */
-function startJumpGame() {
-  const canvas = document.getElementById('gameCanvas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const W = canvas.offsetWidth || 680;
-  const H = 160;
-  canvas.width = W;
-  canvas.height = H;
-
-  const GROUND_Y = H - 32;
-  let gameState = 'idle'; // idle, running, dead
-  let score = 0, hiScore = 0, speed = 5, frame = 0;
-  let nextObs = 100;
-
-  const hero = { x:55, y:GROUND_Y, w:26, h:34, vy:0, onGround:true, legT:0 };
-  let obstacles = [];
-  let clouds = [{x:W*0.25,y:22},{x:W*0.6,y:14},{x:W*0.88,y:28}];
-
-  function doJump() {
-    if(gameState==='dead'){ restart(); return; }
-    if(gameState==='idle') gameState='running';
-    if(hero.onGround){ hero.vy=-12.5; hero.onGround=false; }
-  }
-
-  function restart() {
-    gameState='running'; score=0; speed=5; frame=0; nextObs=100;
-    hero.y=GROUND_Y; hero.vy=0; hero.onGround=true; hero.legT=0;
-    obstacles=[];
-  }
-
-  function spawnObs() {
-    const h=26+Math.random()*22, w=14+Math.random()*10;
-    obstacles.push({x:W+10, y:GROUND_Y+hero.h-h, w, h});
-  }
-
-  function drawCloud(x,y,s) {
-    ctx.save(); ctx.globalAlpha=0.75; ctx.fillStyle='#fff';
-    ctx.beginPath();
-    ctx.arc(x,y,13*s,0,Math.PI*2);
-    ctx.arc(x+15*s,y-5*s,17*s,0,Math.PI*2);
-    ctx.arc(x+32*s,y,12*s,0,Math.PI*2);
-    ctx.fill(); ctx.restore();
-  }
-
-  function drawHero() {
-    const bx=hero.x, by=hero.y-hero.h;
-    // body
-    ctx.fillStyle='#fff7ed';
-    ctx.fillRect(bx+4,by+16,18,14);
-    // arms
-    ctx.fillStyle='#f97316';
-    ctx.fillRect(bx,by+18,6,10);
-    ctx.fillRect(bx+20,by+18,6,10);
-    // head
-    ctx.fillStyle='#f97316';
-    ctx.beginPath(); ctx.arc(bx+13,by+9,10,0,Math.PI*2); ctx.fill();
-    // eyes
-    ctx.fillStyle='#333';
-    if(gameState==='dead'){
-      ctx.fillText('x',bx+7,by+11); ctx.fillText('x',bx+15,by+11);
-    } else {
-      ctx.fillRect(bx+8,by+6,3,3); ctx.fillRect(bx+16,by+6,3,3);
-      ctx.fillStyle='white';
-      ctx.fillRect(bx+9,by+7,1,1); ctx.fillRect(bx+17,by+7,1,1);
-    }
-    // legs
-    ctx.fillStyle='#d97706';
-    if(hero.onGround && gameState==='running'){
-      const lp=Math.sin(hero.legT)*5;
-      ctx.fillRect(bx+5,by+29,8,9+lp);
-      ctx.fillRect(bx+14,by+29,8,9-lp);
-    } else {
-      ctx.fillRect(bx+5,by+29,8,11);
-      ctx.fillRect(bx+14,by+29,8,11);
-    }
-  }
-
-  function drawCactus(o) {
-    ctx.fillStyle='#4caf50';
-    ctx.fillRect(o.x+o.w/2-4,o.y,8,o.h);
-    ctx.fillStyle='#388e3c';
-    ctx.fillRect(o.x+o.w/2-4,o.y,8,5);
-    // arms
-    const armH=Math.min(o.h*0.5,14);
-    ctx.fillStyle='#4caf50';
-    ctx.fillRect(o.x,o.y+6,o.w/2-4,6);
-    ctx.fillRect(o.x,o.y+1,5,11);
-    ctx.fillRect(o.x+o.w/2+4,o.y+8,o.w/2-4,6);
-    ctx.fillRect(o.x+o.w-5,o.y+3,5,11);
-  }
-
-  function hitTest() {
-    for(const o of obstacles){
-      if(hero.x+20>o.x+3 && hero.x+6<o.x+o.w-3 && hero.y>o.y+4 && hero.y-hero.h<o.y+o.h-4)
-        return true;
-    }
-    return false;
-  }
-
-  function tick() {
-    activeRaf = requestAnimationFrame(tick);
-    frame++;
-    // sky
-    ctx.fillStyle='#daeef8'; ctx.fillRect(0,0,W,H);
-    // clouds
-    clouds.forEach(c=>{
-      drawCloud(c.x,c.y,1);
-      if(gameState==='running') c.x-=0.7;
-      if(c.x<-70) c.x=W+40;
-    });
-    // ground
-    ctx.fillStyle='#6dbf45'; ctx.fillRect(0,GROUND_Y+hero.h,W,6);
-    ctx.fillStyle='#8d6840'; ctx.fillRect(0,GROUND_Y+hero.h+5,W,H-(GROUND_Y+hero.h+5));
-    // ground line detail
-    ctx.fillStyle='#5aa338';
-    for(let gx=((frame*speed)%40);gx<W;gx+=40){
-      ctx.fillRect(gx,GROUND_Y+hero.h,20,2);
-    }
-
-    if(gameState==='running'){
-      score++;
-      if(score%400===0) speed=Math.min(speed+0.6,13);
-      // physics
-      hero.vy+=0.72; hero.y+=hero.vy;
-      if(hero.y>=GROUND_Y){ hero.y=GROUND_Y; hero.vy=0; hero.onGround=true; }
-      hero.legT+=0.28;
-      // obstacles
-      nextObs--;
-      if(nextObs<=0){ spawnObs(); nextObs=110+Math.random()*90; }
-      obstacles.forEach(o=>o.x-=speed);
-      obstacles=obstacles.filter(o=>o.x>-60);
-      if(hitTest()){ gameState='dead'; if(score>hiScore)hiScore=score; }
-    }
-
-    obstacles.forEach(o=>drawCactus(o));
-    drawHero();
-
-    // score
-    ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.font='bold 13px Baloo 2,sans-serif'; ctx.textAlign='right';
-    ctx.fillText(Math.floor(score/10),W-10,20);
-
-    // overlays
-    if(gameState==='idle'||gameState==='dead'){
-      ctx.fillStyle='rgba(0,0,0,0.42)';
-      ctx.roundRect ? (ctx.beginPath(),ctx.roundRect(W/2-115,H/2-26,230,52,10),ctx.fill())
-                    : ctx.fillRect(W/2-115,H/2-26,230,52);
-      ctx.fillStyle='white'; ctx.font='bold 14px Baloo 2,sans-serif'; ctx.textAlign='center';
-      ctx.fillText(gameState==='dead'?`Score: ${Math.floor(score/10)} — Tap to try again!`:'Tap or press SPACE to start jumping!',W/2,H/2+6);
-    }
-
-    // update display scores
-    const ls=document.getElementById('liveScore');
-    const hs=document.getElementById('hiScore');
-    if(ls) ls.textContent=Math.floor(score/10);
-    if(hs) hs.textContent=Math.floor(hiScore/10);
-
-    // story ready banner
-    if(storyReady){
-      const banner=document.getElementById('storyReadyBanner');
-      if(banner) banner.style.display='block';
-    }
-  }
-
-  canvas.addEventListener('click', doJump);
-  canvas.addEventListener('touchstart', e=>{e.preventDefault(); doJump();},{passive:false});
-  document.addEventListener('keydown', e=>{if(e.code==='Space'&&document.getElementById('gameCanvas')){e.preventDefault();doJump();}});
-
-  if(activeRaf) cancelAnimationFrame(activeRaf);
-  activeRaf = requestAnimationFrame(tick);
-}
-
-/* ===== BUILD STORY ===== */
-function buildStory() {
-  if(activeRaf){cancelAnimationFrame(activeRaf); activeRaf=null;}
-  renderStepDots();
-  renderSummaryBar();
-  document.getElementById('stepsRow').style.display='none';
-  storyReady=false;
-
-  const {name,character,theme,setting,problem,ending,length} = answers;
-  const paraCount = length?length.paragraphs:4;
-  const area = document.getElementById('mainArea');
-
-  area.innerHTML=`
-    <div class="story-ready-banner" id="storyReadyBanner">🎉 Your story is ready! Scroll down to read it!</div>
-    <div class="loading-screen">
-      <div class="loading-top">
-        <div class="loading-title">Writing your story<span class="writing-dots"></span></div>
-        <div class="loading-sub">Play the jumping game while you wait!</div>
-      </div>
-      <div class="game-label">Jump over the cacti — tap the game or press SPACE!</div>
-      <canvas id="gameCanvas" style="height:160px;display:block;width:100%"></canvas>
-      <div class="game-score-row">
-        <div>Score: <span id="liveScore">0</span></div>
-        <div>Best: <span id="hiScore">0</span></div>
       </div>
     </div>
     <div id="storyArea"></div>
     <div id="actionArea"></div>
   `;
-
-  setTimeout(()=>startJumpGame(), 120);
-
-  const prompt=`Write a ${paraCount===2?'short and punchy':'detailed and exciting'} story for a Year 3 student (age 8-9).
-Use EXACTLY these details the student chose:
-- Hero's name: ${name}
-- Character type: ${character.label}
-- World: ${theme.label}
-- Where the adventure starts: ${setting.label}
-- The big problem: ${problem.label}
-- How it ends: ${ending.label}
-
-Rules:
-- Exactly ${paraCount} paragraphs — no more, no less
-- Use the hero's name frequently
-- Exciting, vivid, age-appropriate language with short punchy sentences
-- The title should be creative and include the hero's name
-- Output the title on the very first line (no label, just the title), then a blank line, then the story
-- Plain text only — no markdown, no asterisks, no bullet points`;
-
-  fetch("https://api.anthropic.com/v1/messages",{
-    method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({
-      model:"claude-sonnet-4-20250514",
-      max_tokens:1000,
-      messages:[{role:"user",content:prompt}]
-    })
-  })
-  .then(r=>r.json())
-  .then(data=>{
-    const text=data.content.map(c=>c.text||'').join('');
-    const lines=text.trim().split('\n').filter(l=>l.trim()!=='');
-    const title=lines[0];
-    const body=lines.slice(1).join('\n');
-    const rawParas=body.split(/\n\s*\n/).map(p=>p.replace(/\n/g,' ').trim()).filter(Boolean);
-
-    const safeRx=name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-    const storyHTML=rawParas.map(p=>{
-      const hl=p.replace(new RegExp(`\\b${safeRx}\\b`,'g'),`<span class="story-highlight">${name}</span>`);
-      return `<p>${hl}</p>`;
-    }).join('');
-
-    storyReady=true;
-    document.getElementById('storyArea').innerHTML=`
-      <div class="story-output">
-        <div class="story-output-header">
-          <div class="story-badge">✨ Your ${paraCount===2?'Short':'Long'} Story</div>
-          <div class="story-main-title">${title}</div>
-          <div class="story-author">A story by ${name}</div>
-        </div>
-        <div class="story-divider" style="border:none;border-top:1.5px solid var(--border);margin:1.25rem 0"></div>
-        <div class="story-body">${storyHTML}</div>
-      </div>`;
-    document.getElementById('actionArea').innerHTML=`
-      <div class="action-row">
-        <button class="action-btn primary" onclick="regenerate()">✨ Write it differently</button>
-        <button class="action-btn secondary" onclick="startOver()">🔁 Make a new story</button>
-      </div>`;
-    const banner=document.getElementById('storyReadyBanner');
-    if(banner){banner.style.display='block'; banner.scrollIntoView({behavior:'smooth',block:'start'});}
-  })
-  .catch(()=>{
-    storyReady=true;
-    document.getElementById('storyArea').innerHTML=`
-      <div class="loading-screen" style="text-align:center;padding:2rem">
-        <div style="font-size:2.5rem;margin-bottom:0.5rem">😟</div>
-        <div class="loading-title">Oops! Something went wrong.</div>
-        <div class="loading-sub">Check your internet and try again.</div>
-      </div>`;
-    document.getElementById('actionArea').innerHTML=`<button class="next-btn" onclick="buildStory()" style="margin-top:1rem">Try again</button>`;
-  });
+  setTimeout(()=>startGame(),100);
+  setTimeout(()=>{
+    document.getElementById('readyBanner').style.display='block';
+    document.getElementById('nameArea').style.display='block';
+    document.getElementById('readyBanner').scrollIntoView({behavior:'smooth',block:'nearest'});
+    const ni=document.getElementById('heroName');
+    if(ni)ni.addEventListener('keydown',e=>{if(e.key==='Enter')showStory();});
+  },1600);
 }
 
-function regenerate(){
+function showStory(){
+  const ni=document.getElementById('heroName');
+  const name=(ni&&ni.value.trim())||'the hero';
+  const key=`${ans.character}|${ans.world}|${ans.problem}|${ans.ending}`;
+  const s=stories[key]||Object.values(stories)[0];
+  const title=s.title.replace(/\{name\}/g,name);
+  const bodyHTML=s.body.map(p=>`<p>${p.replace(/\{name\}/g,`<span class="hi">${name}</span>`)}</p>`).join('');
+  document.getElementById('nameArea').style.display='none';
+  document.getElementById('readyBanner').style.display='none';
+  document.getElementById('storyArea').innerHTML=`
+    <div class="story-card">
+      <div style="text-align:center;margin-bottom:1.2rem">
+        <div class="sbadge">✨ Your story</div>
+        <div class="stitle">${title}</div>
+        <div class="sauthor">A story by ${name}</div>
+      </div>
+      <hr class="sdiv">
+      <div class="sbody">${bodyHTML}</div>
+    </div>`;
+  document.getElementById('actionArea').innerHTML=`
+    <div class="arow">
+      <button class="abtn p" onclick="tryAgain()">✨ Try different choices</button>
+      <button class="abtn s" onclick="document.getElementById('storyArea').scrollIntoView({behavior:'smooth'})">📖 Read it again</button>
+    </div>`;
+  document.getElementById('storyArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function tryAgain(){
   if(activeRaf){cancelAnimationFrame(activeRaf);activeRaf=null;}
-  buildStory();
+  step=0;ans={};
+  render();
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function startOver(){
-  if(activeRaf){cancelAnimationFrame(activeRaf);activeRaf=null;}
-  currentStep=0; answers={};
-  document.getElementById('stepsRow').style.display='flex';
-  storyReady=false;
-  renderStep();
+function startGame(){
+  const canvas=document.getElementById('gc');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.offsetWidth||660,H=155;
+  canvas.width=W;canvas.height=H;
+  const GY=H-30;
+  let state='idle',score=0,hi=0,spd=5,fr=0,nxt=100;
+  const hero={x:50,y:GY,h:32,vy:0,grnd:true,leg:0};
+  let obs=[],clouds=[{x:W*.2,y:18},{x:W*.55,y:12},{x:W*.82,y:22}];
+
+  function jump(){if(state==='dead'){restart();return;}if(state==='idle')state='running';if(hero.grnd){hero.vy=-12;hero.grnd=false;}}
+  function restart(){state='running';score=0;spd=5;fr=0;nxt=100;hero.y=GY;hero.vy=0;hero.grnd=true;hero.leg=0;obs=[];}
+  function spawnObs(){const h=24+Math.random()*20,w=13+Math.random()*9;obs.push({x:W+10,y:GY+hero.h-h,w,h});}
+
+  function drawCloud(x,y){
+    ctx.save();ctx.globalAlpha=.7;ctx.fillStyle='#fff';
+    ctx.beginPath();ctx.arc(x,y,12,0,Math.PI*2);ctx.arc(x+14,y-4,15,0,Math.PI*2);ctx.arc(x+29,y,11,0,Math.PI*2);
+    ctx.fill();ctx.restore();
+  }
+  function drawHero(){
+    const bx=hero.x,by=hero.y-hero.h;
+    ctx.fillStyle='#fff7ed';ctx.fillRect(bx+4,by+15,17,13);
+    ctx.fillStyle='#f97316';ctx.fillRect(bx,by+17,5,9);ctx.fillRect(bx+19,by+17,5,9);
+    ctx.fillStyle='#f97316';ctx.beginPath();ctx.arc(bx+12,by+9,9,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#333';
+    if(state==='dead'){ctx.font='bold 8px sans-serif';ctx.textAlign='center';ctx.fillText('x',bx+8,by+12);ctx.fillText('x',bx+16,by+12);}
+    else{ctx.fillRect(bx+7,by+6,3,3);ctx.fillRect(bx+15,by+6,3,3);ctx.fillStyle='#fff';ctx.fillRect(bx+8,by+7,1,1);ctx.fillRect(bx+16,by+7,1,1);}
+    ctx.fillStyle='#d97706';
+    if(hero.grnd&&state==='running'){const lp=Math.sin(hero.leg)*4;ctx.fillRect(bx+4,by+27,7,8+lp);ctx.fillRect(bx+13,by+27,7,8-lp);}
+    else{ctx.fillRect(bx+4,by+27,7,10);ctx.fillRect(bx+13,by+27,7,10);}
+  }
+  function drawCactus(o){
+    ctx.fillStyle='#4caf50';ctx.fillRect(o.x+o.w/2-3,o.y,6,o.h);
+    ctx.fillStyle='#388e3c';ctx.fillRect(o.x+o.w/2-3,o.y,6,5);
+    ctx.fillStyle='#4caf50';
+    ctx.fillRect(o.x,o.y+5,o.w/2-3,5);ctx.fillRect(o.x,o.y+1,4,10);
+    ctx.fillRect(o.x+o.w/2+3,o.y+7,o.w/2-3,5);ctx.fillRect(o.x+o.w-4,o.y+3,4,10);
+  }
+  function hit(){for(const o of obs){if(hero.x+18>o.x+3&&hero.x+5<o.x+o.w-3&&hero.y>o.y+4&&hero.y-hero.h<o.y+o.h-4)return true;}return false;}
+
+  function tick(){
+    activeRaf=requestAnimationFrame(tick);fr++;
+    ctx.fillStyle='#daeef8';ctx.fillRect(0,0,W,H);
+    clouds.forEach(c=>{drawCloud(c.x,c.y);if(state==='running')c.x-=.65;if(c.x<-65)c.x=W+35;});
+    ctx.fillStyle='#6dbf45';ctx.fillRect(0,GY+hero.h,W,6);
+    ctx.fillStyle='#8d6840';ctx.fillRect(0,GY+hero.h+5,W,H);
+    ctx.fillStyle='#5aa338';for(let gx=(fr*spd%38);gx<W;gx+=38)ctx.fillRect(gx,GY+hero.h,18,2);
+    if(state==='running'){
+      score++;if(score%380===0)spd=Math.min(spd+.55,12);
+      hero.vy+=.7;hero.y+=hero.vy;
+      if(hero.y>=GY){hero.y=GY;hero.vy=0;hero.grnd=true;}
+      hero.leg+=.27;nxt--;
+      if(nxt<=0){spawnObs();nxt=105+Math.random()*85;}
+      obs.forEach(o=>o.x-=spd);obs=obs.filter(o=>o.x>-55);
+      if(hit()){state='dead';if(score>hi)hi=score;}
+    }
+    obs.forEach(o=>drawCactus(o));drawHero();
+    ctx.fillStyle='rgba(0,0,0,.25)';ctx.font='bold 12px sans-serif';ctx.textAlign='right';
+    ctx.fillText(Math.floor(score/10),W-8,18);
+    if(state==='idle'||state==='dead'){
+      ctx.fillStyle='rgba(0,0,0,.42)';ctx.fillRect(W/2-112,H/2-24,224,48);
+      ctx.fillStyle='#fff';ctx.font='bold 13px sans-serif';ctx.textAlign='center';
+      ctx.fillText(state==='dead'?`Score: ${Math.floor(score/10)}  —  Tap to try again!`:'Tap the game or press SPACE to jump!',W/2,H/2+5);
+    }
+    const gs=document.getElementById('gs'),gb=document.getElementById('gb');
+    if(gs)gs.textContent=Math.floor(score/10);if(gb)gb.textContent=Math.floor(hi/10);
+  }
+  canvas.addEventListener('click',jump);
+  canvas.addEventListener('touchstart',e=>{e.preventDefault();jump();},{passive:false});
+  document.addEventListener('keydown',e=>{if(e.code==='Space'&&document.getElementById('gc')){e.preventDefault();jump();}});
+  if(activeRaf)cancelAnimationFrame(activeRaf);
+  activeRaf=requestAnimationFrame(tick);
 }
 
-renderStep();
+render();
 </script>
 </body>
 </html>
