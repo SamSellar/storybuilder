@@ -51,8 +51,8 @@ h1 span{color:var(--or)}
 .stitle{font-family:'Baloo 2',cursive;font-size:1.65rem;font-weight:800;color:var(--ink);line-height:1.2;margin-bottom:.2rem}
 .sauthor{color:var(--mu);font-size:.88rem;margin-bottom:1rem}
 .sdiv{border:none;border-top:1.5px solid var(--bd);margin:1rem 0}
-.sbody{font-size:1.05rem;line-height:1.85;color:var(--ink)}
-.sbody p{margin-bottom:.95rem}
+.sbody{font-size:1.05rem;line-height:1.9;color:var(--ink)}
+.sbody p{margin-bottom:1rem}
 .sbody p:last-child{margin-bottom:0}
 .hi{font-weight:700;color:var(--pu)}
 .arow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.5rem}
@@ -80,150 +80,151 @@ h1 span{color:var(--or)}
 
 <script>
 const stories = {
-  "Wizard|Jungle island|A stolen gem|A big celebration":{
-    title:"{name} and the Crystal Gem of the Jungle",
-    body:[
-      "Deep in the tangled jungle, a brave wizard named {name} discovered something terrible — the ancient Crystal Gem had been stolen right from its golden pedestal! Without it, the jungle plants were slowly turning grey. {name} grabbed a wooden staff and set off through the thick vines without a moment to waste.",
-      "Strange creatures peered through the leaves as {name} followed muddy footprints deeper into the jungle. At last, {name} reached a hidden waterfall — and behind it sat a sneaky jungle sprite, clutching the glowing gem. {name} took a deep breath and cast a spectacular rainbow spell, filling the whole cave with dazzling colour.",
-      "The sprite blinked in amazement. It had never seen anything so beautiful! Slowly, it held out the gem. {name} smiled and promised to teach the sprite more magic — and the sprite promised never to steal again. The moment {name} returned the gem to its pedestal, every flower in the jungle burst into bloom at once.",
-      "That evening, all the jungle animals gathered for the biggest celebration the jungle had ever seen. Parrots sang, monkeys danced, and fireflies lit up the sky like tiny stars. {name} sat in the middle of it all, laughing and munching on the juiciest mango in the whole jungle!"
-    ]
-  },
-  "Wizard|Jungle island|A stolen gem|Making a new friend":{
-    title:"{name} and the Lonely Jungle Thief",
-    body:[
-      "The jungle was in trouble. Someone had snatched the Crystal Gem, and without it the rivers were running dry. {name}, a young wizard with a wonky hat and a very big heart, marched into the jungle with a trusty spell book tucked under one arm.",
-      "After squeezing through thorny bushes and tiptoeing over a very grumpy crocodile, {name} found the culprit — a small scruffy monkey sitting on a mossy log, hugging the gem tightly. The monkey didn't look sneaky. It looked lonely. {name} sat down quietly beside it.",
-      "The monkey explained in sad little squeaks that it had taken the gem only because it glowed, and glowing things made it feel less scared of the dark. {name} thought carefully, then conjured a tiny glowing orb — a magical night-light just for the monkey. Its eyes went wide with wonder, and it handed back the gem straight away.",
-      "From that day on, {name} and the little monkey were the best of friends. They explored the jungle every day, and every night the magical orb glowed softly in the monkey's tree. The jungle thrived, and neither of them was ever lonely again."
-    ]
-  },
-  "Wizard|Jungle island|Everyone fell asleep|Becoming a hero":{
-    title:"{name} Wakes the Sleeping Jungle",
-    body:[
-      "A strange enchanted pollen was drifting through the jungle, sending everything it touched into a deep magical sleep. The butterflies, the monkeys, even the trees — all snoring. Only {name} had been flying too fast on a broomstick for the pollen to catch. \"Right,\" said {name}, landing with a thud. \"It's up to me.\"",
-      "Following the drifting clouds of pollen, {name} discovered the source — an ancient sneezing flower as big as a house, hiccupping sleep-dust with every sneeze. It wasn't being mean. It had a terrible cold. {name} searched a pile of old scrolls and found a recipe for magical ginger tea.",
-      "It took {name} three hours to brew the tea in a giant leaf-bowl. Then {name} carefully poured it into the flower's roots. Slowly, the sneezing stopped. The pollen cleared. One by one, the animals blinked awake — confused, yawning, and covered in leaf-shapes from where they'd fallen.",
-      "When the jungle elder — an enormous ancient tortoise — declared {name} a Jungle Hero, every creature cheered so loudly that mangoes fell from the trees. {name} glowed with pride and bowed very, very carefully."
-    ]
-  },
-  "Wizard|Jungle island|A monster is lost|A funny surprise":{
-    title:"{name} and the Very Confused Jungle Monster",
-    body:[
-      "A distress call echoed through the jungle — a huge green monster had wandered in and was completely lost, crashing through the trees and accidentally sitting on huts. {name}, the most enthusiastic (if slightly clumsy) wizard around, set off immediately. Armed with a spell book that kept blowing open to the wrong page, {name} tripped and stumbled deeper into the jungle.",
-      "After accidentally turning three frogs bright pink and making a tree sneeze glitter, {name} found the monster. It was enormous, and it had somehow got a banana tree stuck on its head like a very leafy hat. The monster looked deeply embarrassed.",
-      "{name} tried a navigation spell to help the monster find its home — but fumbled the words and turned the monster into a briefly very confused giant tortoise. The spell wore off in seconds. The monster blinked. The banana tree was still on its head.",
-      "Eventually {name} walked the monster safely home using a hand-drawn map, three wrong turns, and a great deal of patience. By the time they arrived, the jungle animals were already re-enacting the story of the giant tortoise monster. {name} laughed the loudest of all."
-    ]
-  },
-  "Wizard|Outer space|A stolen gem|A big celebration":{
-    title:"{name} and the Star Gem of the Galaxy",
-    body:[
-      "The Star Gem — the most precious jewel in all the galaxy — had been stolen from its display case aboard the Space Station, and without it, every planet in the system began to grow cold. {name} fired up a rocket broomstick and zoomed off into the stars to find it.",
-      "The trail of stardust led {name} past sleeping asteroids and through a glittery nebula that smelled of cinnamon. At the edge of the galaxy, {name} found the gem — in the hands of a young alien who had taken it simply because it sparkled, and sparkly things made it happy.",
-      "{name} explained very patiently that gems are not for collecting when everyone needs them. The alien looked embarrassed and immediately held it out. {name} thanked it kindly, promised to bring it something sparkly of its own one day, and zoomed the gem home.",
-      "Every civilisation in the galaxy threw a party on the same night. {name} was the guest of honour at all of them — which required a great deal of teleporting — and danced in zero gravity until the stars began to dim for morning."
-    ]
-  },
-  "Wizard|Outer space|The sun has vanished|Making a new friend":{
-    title:"{name} and the Star Collector",
-    body:[
-      "The galaxy woke up to darkness. The sun had vanished, and every planet sat cold and confused. {name}, a quick-thinking space wizard, fired up a rocket broomstick and followed the faintest trail of warmth across the stars to find it.",
-      "After two meteor showers and a rather rude black hole, {name} discovered the sun crammed inside a glass dome on a tiny, lonely planet. Beside it was a small alien with six arms and the saddest expression {name} had ever seen. The alien had taken the sun because its planet had no light and it was terribly lonely.",
-      "{name} sat with the alien for a long time. Then {name} cast a special spell — splitting off a small personal star, just bright enough to light one little planet. The alien's eyes filled with happy tears. The sun was released and rolled back into its rightful place across the sky.",
-      "Now {name} visits the alien's glowing planet every month. They sit under their little star, share snacks from across the galaxy, and watch the distant suns sparkle. Neither of them is lonely any more."
-    ]
-  },
-  "Wizard|Outer space|Everyone fell asleep|Becoming a hero":{
-    title:"The Wizard Who Woke the Galaxy",
-    body:[
-      "A magical sleep mist was spreading across the galaxy, sending every creature it touched into a deep snoring slumber. Planet by planet, everything went quiet. {name} was the only one left awake, floating alone in the space station. \"Right,\" said {name}. \"It's up to me.\"",
-      "Following the mist back to its source meant dodging sleeping space whales, navigating through snoring satellites, and very carefully stepping over an enormous sleeping robot on Planet Krix-9. At the centre of it all was an ancient spell clock — ticking down to zero.",
-      "{name} studied the clock carefully, flipped through every page of the wizard's almanac, and with ten seconds to spare, reversed the spell. A wave of golden light rippled across the galaxy. One by one, creatures stirred, blinked, and woke up.",
-      "From the smallest moon mouse to the tallest galactic giant, every living thing knew the name {name}. Songs were written, statues were carved, and a whole new constellation was shaped in {name}'s honour — visible from every planet on the clearest nights."
-    ]
-  },
-  "Wizard|Outer space|A monster is lost|A funny surprise":{
-    title:"{name} and the Very Lost Space Monster",
-    body:[
-      "The distress beacon came from near the Rings of Zarblox. {name}, space wizard extraordinaire, steered toward the signal and found something unexpected — a gigantic purple monster floating in space, wrapped in its own tentacles and spinning very slowly. It had a deeply embarrassed look on all four of its faces.",
-      "The monster explained (in honks that {name}'s translator struggled with) that it had gotten dizzy in a meteor shower and forgotten which way was home. {name} tried to use the star map — but the monster kept accidentally sitting on it.",
-      "After three wrong turns, a trip through a wormhole that deposited them briefly in someone's bathroom on Pluto-Minor, and a very confusing argument with a satellite, {name} finally navigated the monster safely home. The monster's family came rushing out — all forty-seven of them.",
-      "They threw {name} a surprise party on the spot, right there in space. It was chaotic, extremely loud, and someone sat on the rocket broomstick. {name} laughed until the space suit fogged up entirely."
-    ]
-  },
-  "Dragon|Magic kingdom|A stolen gem|A big celebration":{
-    title:"{name} and the Royal Gem",
-    body:[
-      "The Royal Gem had been stolen from the castle tower, and every knight had failed to find it. That was when {name} — a small but fiercely determined dragon — volunteered to try. {name} had an excellent nose for sparkly things and followed the trail of glittery footprints straight into the Whispering Forest.",
-      "Deep in the forest, {name} found the culprit — not a villain, but a young magpie who had taken the gem because it caught the light beautifully. The magpie hadn't meant any harm. It simply loved shiny things more than anything.",
-      "{name} explained gently why the gem was so important to the whole kingdom, and offered to find the magpie something just as beautiful to keep. The magpie handed it over with a small, apologetic chirp. {name} flew it straight back to the castle and placed it in the king's hands.",
-      "The kingdom celebrated for three whole days. There were feasts, fireworks, and a parade where {name} flew overhead showering golden sparks across the cheering crowd. It was, everyone agreed, the very best party the kingdom had ever seen!"
-    ]
-  },
-  "Dragon|Magic kingdom|The sun has vanished|Making a new friend":{
-    title:"{name} and the Stolen Sunshine",
-    body:[
-      "The magic kingdom had gone dark overnight. No warmth, no light, no golden mornings — just cold grey sky. The king called for the bravest dragon in the land, and {name} stepped forward. {name} had always wanted to go on a proper quest.",
-      "Flying high above the clouds, {name} followed the last traces of sunlight to a mountain of frozen cloud. There sat a mischievous weather witch, who had bottled the sun to use as a reading lamp because her candles kept blowing out.",
-      "{name} didn't breathe fire at the witch. Instead, {name} landed carefully and asked to sit beside her. They talked for a long time. {name} showed her how dragon fire could burn so steadily it would never be blown out. The witch's eyes lit up — she handed over the sun jar immediately.",
-      "{name} released the sun back into the sky, and the witch visited the kingdom every week after that. She and {name} would sit together watching sunsets — two unlikely friends who had both been a little lonely before they met."
-    ]
-  },
-  "Dragon|Jungle island|Everyone fell asleep|Becoming a hero":{
-    title:"{name} Saves the Sleeping Jungle",
-    body:[
-      "It started with the butterflies — they folded their wings mid-flutter and drifted to the ground, fast asleep. Then the monkeys, the toucans, the trees themselves. A strange enchanted pollen was drifting through the jungle air. Only {name}, a dragon who breathed through their mouth, was safe. {name} set off to find the source.",
-      "Deep in the jungle, the pollen led to an ancient sneezing flower as big as a house, hiccupping clouds of sleep-dust with every sneeze. It had a terrible cold. {name} searched through old jungle scrolls and found a recipe for magical ginger tea — the cure for flower colds.",
-      "Three hours of careful fire-brewing later, {name} poured the tea into the flower's roots. The sneezing stopped. The pollen cleared. All across the jungle, animals blinked awake, confused and yawning, covered in the leaf-shapes from where they'd fallen.",
-      "When the jungle elder — an enormous ancient tortoise — declared {name} a Jungle Hero, every creature cheered so loudly that fruit fell from every tree. {name} glowed with pride, accidentally lit a small bush on fire (which was quickly put out), and bowed very carefully."
-    ]
-  },
-  "Dragon|Underwater city|A monster is lost|A funny surprise":{
-    title:"{name} and the Upside-Down Sea Serpent",
-    body:[
-      "The underwater city of Coralia was in a panic. A gigantic sea serpent had wandered in from the deep ocean and was completely lost, swimming in nervous circles through the market and knocking over stalls with its enormous tail. The mayor begged for help. {name} — a water-breathing dragon with excellent navigation skills — dove straight in.",
-      "Finding the serpent was easy. It was the biggest creature in the city, and it was wearing a fruit stall on its head like a very fancy hat. {name} swam up calmly. The serpent, it turned out, had been following what it thought was a map — but which was actually a shopping list someone had dropped in the ocean.",
-      "{name} studied the sea-stars and currents, worked out exactly where the serpent's home was, and led it all the way there — the serpent following carefully, still wearing the fruit stall.",
-      "Back in Coralia, the mayor declared {name} a hero. Then found a pineapple in the fountain, a bunch of kelp in the library, and a startled lobster on the mayor's own chair. The city laughed about it for years, and whenever anything went missing, someone always said — \"Must have been the serpent.\""
-    ]
-  },
-  "Fairy|Magic kingdom|Everyone fell asleep|A big celebration":{
-    title:"{name} and the Lullaby Disaster",
-    body:[
-      "It was the quietest morning the magic kingdom had ever known — because everyone in it was fast asleep. The baker had fallen face-first into a loaf. The guards were snoring at their posts. Even the king was slumped on his throne, crown over one ear. Only {name}, a quick little fairy, had been flying too fast for the sleeping spell to catch.",
-      "{name} traced the spell to its source: a dusty old music box in the castle attic, wound up by accident, playing a magical lullaby on endless loop. {name} tried to reach the winding key — but it was too high, and {name} was too small.",
-      "Thinking fast, {name} gathered dandelion seeds, threaded them into a tiny rope, looped it around the key, and pulled with every bit of fairy strength available. The music box clicked to a stop mid-note. A warm golden wave washed over the kingdom. Everyone woke at the exact same moment.",
-      "Nobody could explain why they'd been asleep — but when they found out it was {name} who'd saved them, the whole kingdom threw a party that lasted three glorious days. {name} danced the longest of anyone, zooming between the lanterns as fireworks crackled overhead."
-    ]
-  },
-  "Fairy|Underwater city|A stolen gem|Becoming a hero":{
-    title:"{name} and the Pearl of Coralia",
-    body:[
-      "The Great Pearl had vanished from the heart of Coralia, the shimmering underwater city, and without it the city's lights were growing dim. {name}, a tiny fairy who had recently discovered she could breathe underwater (a useful surprise), fluttered down through the ocean waves to help.",
-      "The trail of glowing oyster-dust led {name} to the Ink Caves — dark twisting tunnels filled with swirling shadows. {name} wasn't sure she was brave enough. But someone had to go in, so in she went, holding her wand like a torch, pushing back the dark inch by inch.",
-      "At the deepest point of the cave, {name} found the Pearl sitting on a rock — and beside it, a very old blind octopus who had mistaken it for an egg he'd been faithfully sitting on for thirty years. {name} explained the mix-up gently, gave the octopus a warm hug, and carried the Pearl carefully back to the city.",
-      "As {name} returned the Pearl to its place, all of Coralia blazed back into brilliant colour. The mer-people swam in joyful circles. The mayor placed a tiny coral crown on {name}'s head and declared her the smallest — and greatest — hero the underwater city had ever known."
-    ]
-  },
-  "Robot|Outer space|A monster is lost|A big celebration":{
-    title:"{name} and the Gentle Giant",
-    body:[
-      "{name} was a small but very capable robot, zooming between planets on a routine maintenance check, when a distress signal came through. A space monster — enormous, purple, with seventeen tentacles — had gotten separated from its family and was drifting alone in an asteroid field, beeping sadly.",
-      "{name} pulled up beside it. The monster was bigger than {name}'s entire ship, but it had curled up small and was trying to make itself as little as possible. {name} opened the communication channel and made a friendly beeping sound. The monster beeped back. They didn't speak the same language, but somehow understood each other perfectly.",
-      "{name} ran seventeen star charts and cross-referenced every known monster migration route. Three calculations and one sneaky shortcut through a nebula later, {name} had found the monster's family pod, waiting anxiously near the twin moons of Beryx.",
-      "The reunion was extraordinary — the monster family made a sound like seventy foghorns and wrapped their tentacles around each other in the most enormous hug {name} had ever seen. They wrapped one tentacle gently around {name}'s ship too. That night the monster family performed their traditional celebration dance around the moons, and {name} watched every joyful minute."
-    ]
-  },
-  "Robot|Underwater city|The sun has vanished|A funny surprise":{
-    title:"{name} and the Submarine Sun",
-    body:[
-      "{name} was a waterproof robot — fortunately — because the moment the sun disappeared and plunged everything into darkness, {name} dived straight into the ocean to investigate. Satellites had tracked the last position of the sun somewhere near the Coralia Trench, which was very deep and very strange.",
-      "Descending through the dark water, {name}'s sensors picked up something extraordinary — a warm glow coming from far below. At the bottom of the trench, the sun had rolled in through an underwater volcano and was sitting on the ocean floor, looking confused and slightly damp.",
-      "Getting the sun back to the sky was a significant engineering challenge. {name} rigged up a pulley system using anchor chains, kelp conveyor belts, and one extremely obliging whale. After forty-five minutes, two miscalculations, and one incident involving a very startled crab, the sun slowly rose back through the water and popped into the sky.",
-      "The sun, it later emerged, had simply slipped. It was extremely embarrassing for everyone involved, and the sun refused to discuss it. {name} became famous across the galaxy as the robot who used a whale to put the sun back — a story that grew more elaborate with every single retelling."
-    ]
-  }
+
+"Wizard|Jungle island|A stolen gem|A big celebration":{
+title:"{name} and the Shiny Gem",
+body:[
+"One morning, {name} walked into the jungle and found something bad. The magic gem was gone! Someone had taken it from its special spot. Without the gem, the jungle flowers were dying. {name} picked up a big stick and ran into the trees to look for it.",
+"Deep in the jungle, {name} found a little sprite sitting by a waterfall. The sprite had the gem in its hands. It was hiding behind a big leaf. {name} took a deep breath and used a rainbow spell. Colours flew all around the cave. It was so pretty!",
+"The sprite had never seen anything like it. It smiled and held out the gem. {name} took it back and said thank you. Then {name} put the gem back in its spot. All at once, every flower in the jungle opened up. They were bright red, yellow, and pink.",
+"That night, all the animals had a big party. The monkeys danced. The birds sang loud songs. Little bugs lit up the sky like tiny lights. {name} sat in the middle of it all, eating the biggest, sweetest mango ever. What a great day!"
+]},
+
+"Wizard|Jungle island|A stolen gem|Making a new friend":{
+title:"{name} and the Sad Little Monkey",
+body:[
+"The magic gem was gone! Without it, the rivers in the jungle had stopped flowing. {name} put on a hat and set off to find it. {name} had a big spell book and a kind heart.",
+"After a long walk, {name} found the gem. A small monkey was holding it tight. It was sitting all alone on a log. The monkey did not look mean. It just looked sad. {name} sat down next to it and waited.",
+"The monkey made small, sad sounds. It had taken the gem because it glowed in the dark. The monkey was scared of the dark. {name} had a good idea. {name} made a small glowing ball of light, just for the monkey. The monkey's eyes went wide. It gave back the gem right away.",
+"After that, {name} and the monkey played together every day. At night, the little light kept the monkey safe and warm. The rivers flowed again. And {name} had made a brand new best friend."
+]},
+
+"Wizard|Jungle island|Everyone fell asleep|Becoming a hero":{
+title:"{name} Wakes Up the Jungle",
+body:[
+"A strange yellow dust was floating through the jungle. Every animal it touched fell fast asleep. The birds fell off their branches. The monkeys stopped mid-swing. Even the big old trees seemed to droop. Only {name} was still awake. {name} had been flying on a broomstick and the dust had missed. \"I have to fix this,\" said {name}.",
+"The yellow dust led {name} to a huge flower. It was as big as a house! The flower kept sneezing out big puffs of yellow dust. It was not being mean. It just had a cold. {name} looked through an old spell book and found a recipe for magic ginger tea.",
+"It took a long time to make the tea. {name} used fire from the wand to heat it up in a big leaf. Then {name} poured the tea onto the flower's roots. The flower stopped sneezing. The yellow dust floated away. One by one, all the animals woke up.",
+"The oldest animal in the jungle was a big turtle. He called out, \"{name} is a hero!\" All the animals cheered. Fruit fell from the trees. {name} smiled so much that cheeks hurt. It felt really, really good."
+]},
+
+"Wizard|Jungle island|A monster is lost|A funny surprise":{
+title:"{name} and the Lost Jungle Monster",
+body:[
+"A big green monster had walked into the jungle and now it was totally lost. It kept bumping into trees and knocking things over by mistake. The animals were scared. {name} grabbed a spell book and went to help. The book kept blowing open to the wrong page, which did not help at all.",
+"On the way, {name} turned three frogs bright pink by mistake and made a tree sneeze glitter. Oops. When {name} finally found the monster, it had a whole banana tree stuck on its head like a big leafy hat. The monster looked very embarrassed.",
+"It took a really long time to get the monster home. {name} used a hand-drawn map. They went the wrong way three times. At one point they ended up in a mud swamp. The banana tree was still on the monster's head the whole time.",
+"When they finally got there, all the jungle animals were watching. They had seen everything. The animals kept acting out the story of the banana-hat monster over and over again at every party after that. {name} always laughed the loudest."
+]},
+
+"Wizard|Outer space|A stolen gem|A big celebration":{
+title:"{name} and the Missing Star Gem",
+body:[
+"The Star Gem had been taken from the space station. Without it, all the planets were getting cold and dark. {name} jumped on a rocket broomstick and flew off into space to find it. The stars twinkled all around as {name} zoomed through the sky.",
+"The trail of sparkly dust led to the edge of space. There was a young alien sitting on a small rock. It was holding the gem and smiling. The alien had taken it because it was shiny, and shiny things made it happy. It had not meant to cause any trouble.",
+"\"The gem belongs to everyone,\" said {name} kindly. The alien looked down. Then it held out the gem. {name} said thank you and promised to bring the alien something sparkly of its very own one day. The alien waved as {name} flew away.",
+"That night, every planet in space had a party at the same time. There was music and dancing and lots of food. {name} was the special guest at all of them. Luckily, wizards are very good at being in two places at once!"
+]},
+
+"Wizard|Outer space|The sun has vanished|Making a new friend":{
+title:"{name} and the Lonely Alien",
+body:[
+"One morning, the sun was gone. Every planet went dark and cold. {name} got on a rocket broomstick and flew off to look for it. The sky was black all around. It felt strange flying without any sunshine.",
+"After a long flight, {name} saw a tiny glow far away. On a small, dark planet, the sun had been put inside a big glass jar. Next to it sat a little alien with six arms. It looked very sad. It had taken the sun because its planet had no light and it felt very alone.",
+"{name} sat with the alien and listened. Then {name} did something kind. {name} made a small star — just small enough to light up one little planet. The alien looked at it and smiled. Its eyes filled with happy tears. It gave the sun back straight away.",
+"Now {name} visits the alien every month. They sit together under the little star and eat space snacks. They look at the other stars far away. Neither of them feels lonely any more."
+]},
+
+"Wizard|Outer space|Everyone fell asleep|Becoming a hero":{
+title:"{name} Saves the Sleeping Galaxy",
+body:[
+"A strange sleepy mist was spreading through space. Every person and creature it touched fell fast asleep. Planet by planet, everything went quiet. {name} was the only one still awake. {name} had been flying too fast for the mist to catch. \"It is up to me,\" said {name}.",
+"Finding the mist was hard. There were sleeping space whales floating across the path. There were snoring satellites everywhere. On one planet, {name} had to step over a very big sleeping robot. At last, {name} found an old magic clock that was making the mist. It was counting down to zero.",
+"{name} looked at the clock and read every page of the spell book. With just ten seconds left, {name} found the right spell and stopped the clock. A big wave of golden light flew out across space. Everyone woke up.",
+"Every creature in space now knew the name {name}. Songs were written about what {name} had done. A new star pattern was made in the sky in the shape of {name}. On clear nights, you can still see it."
+]},
+
+"Wizard|Outer space|A monster is lost|A funny surprise":{
+title:"{name} and the Spinning Space Monster",
+body:[
+"A big purple monster was floating lost in space. It had got dizzy playing in a group of flying rocks and now it had no idea where home was. It was spinning slowly and looked very silly. {name} flew over to help.",
+"The monster tried to explain where it lived, but kept sitting on the star map by mistake. {name} tried a direction spell, but got the words wrong and they both ended up flying through a strange hole in space. They came out the other side in someone's bathroom on a faraway planet. That was a big surprise for everyone.",
+"After three wrong turns and one very confusing chat with a broken satellite, {name} finally worked out where the monster lived. {name} flew it all the way there. The monster's whole family came rushing out when they saw it. There were lots of them!",
+"They threw a surprise party for {name} on the spot, right there in space. It was very loud. Someone sat on the rocket broomstick by mistake. {name} laughed so hard the space helmet fogged up. Best day ever."
+]},
+
+"Dragon|Magic kingdom|A stolen gem|A big celebration":{
+title:"{name} Finds the Royal Gem",
+body:[
+"The Royal Gem had been taken from the castle. Every knight had tried to find it and failed. Then {name} the dragon stepped forward. {name} had a very good nose for sparkly things. {name} sniffed the air and followed a trail of sparkly footprints into the forest.",
+"Deep in the trees, {name} found the gem. A small bird called a magpie had taken it. The magpie loved shiny things more than anything in the world. It had not meant to cause trouble. {name} sat down and explained why the gem was so important to the whole kingdom.",
+"The magpie looked sad. Then it gave the gem back with a small chirping sound. {name} promised to find it something just as shiny to keep. Then {name} flew straight back to the castle and put the gem into the king's hands.",
+"The whole kingdom had a big party that lasted three days. There was lots of food and music. {name} flew above the crowd and sent golden sparks raining down. Everyone cheered and pointed up. It was the best party the kingdom had ever seen."
+]},
+
+"Dragon|Magic kingdom|The sun has vanished|Making a new friend":{
+title:"{name} and the Bottled Sunshine",
+body:[
+"One morning the magic kingdom woke up in the dark. The sun was gone. It was cold and grey everywhere. The king asked for the bravest dragon to help. {name} stepped forward, spread big wings, and flew up into the sky to look.",
+"High above the clouds, {name} found a witch sitting on a mountain of frozen cloud. The witch had put the sun inside a big glass jar to use as a reading light. Her candles kept blowing out in the wind. She had not thought about what it would do to the whole kingdom.",
+"{name} did not roar or breathe fire. Instead, {name} landed softly and sat down next to her. They had a long talk. {name} showed her how dragon fire can burn without going out, even in the wind. The witch's face lit up. She handed over the jar right away.",
+"The sun burst out of the jar and the kingdom went warm and bright again. The witch came to visit every week after that. She and {name} would sit and watch the sunsets together. They became really good friends."
+]},
+
+"Dragon|Jungle island|Everyone fell asleep|Becoming a hero":{
+title:"{name} the Jungle Hero",
+body:[
+"A strange yellow dust was floating through the jungle. Every animal it touched fell asleep. The butterflies dropped from the air. The monkeys stopped mid-jump. Even the trees drooped. Only {name} was safe — dragons breathe through their mouths, not their noses. {name} set off to find out what was going on.",
+"The yellow dust came from a huge flower deep in the jungle. It was sneezing big puffs of dust over and over again. The flower had a bad cold. {name} found an old jungle recipe for magic ginger tea. It was the cure for sick flowers.",
+"It took three hours to make the tea using dragon fire to heat a big leaf full of water. Then {name} poured it onto the flower's roots. The sneezing stopped. The dust blew away. All over the jungle, animals woke up, yawning and looking confused.",
+"The oldest animal in the jungle was a huge old turtle. He called out in a loud voice, \"{name} is a hero of the jungle!\" Every animal cheered. Fruit fell out of the trees. {name} smiled so wide that a small bit of fire came out by accident. But no one minded."
+]},
+
+"Dragon|Underwater city|A monster is lost|A funny surprise":{
+title:"{name} and the Sea Monster with a Hat",
+body:[
+"A huge sea monster had swum into the underwater city and now it was lost. It kept bumping into things and knocking over market stalls with its big tail. The people of the city were scared. {name}, a dragon who could breathe underwater, swam in to help.",
+"Finding the monster was easy. It was the biggest thing in the whole city. It had knocked a fruit stall into the water and the stall was now stuck on its head like a very odd hat. The monster looked embarrassed. It did not mean to cause trouble.",
+"The monster had been following what it thought was a map. But it was actually a shopping list someone had dropped in the ocean. {name} worked out where the monster's home was and swam alongside it all the way there. The fruit stall stayed on its head the entire time.",
+"Back in the city, the mayor said {name} was a hero. Then they found a pineapple in the fountain. And some seaweed in the library. And a very confused crab sitting on the mayor's chair. Everyone laughed about it for years. Whenever anything went missing, someone would say — \"Must have been the sea monster!\""
+]},
+
+"Fairy|Magic kingdom|Everyone fell asleep|A big celebration":{
+title:"{name} and the Magic Music Box",
+body:[
+"The magic kingdom was very, very quiet. Everyone was asleep! The baker had fallen face-first into some bread. The guards were snoring at the castle gate. Even the king was fast asleep on his throne with his crown over one eye. Only {name} the fairy was still awake, because {name} had been flying too fast for the sleeping spell to catch.",
+"The spell had come from an old music box in the castle attic. Someone had wound it up by mistake and it was playing a sleepy song over and over. {name} needed to stop it. But the switch to turn it off was too high up. And {name} was very small.",
+"{name} had a good idea. {name} found some fluffy dandelion seeds and tied them into a little rope. Then {name} looped the rope around the switch and pulled as hard as possible. Click! The music box stopped. A warm golden light washed over the whole kingdom. Everyone woke up at the same time.",
+"Nobody could remember why they had been asleep. But when they found out that {name} had saved them all, the whole kingdom had a big party. It lasted three whole days. {name} danced the most out of everyone, zooming around the lanterns as the fireworks lit up the sky."
+]},
+
+"Fairy|Underwater city|A stolen gem|Becoming a hero":{
+title:"{name} and the Great Pearl",
+body:[
+"The Great Pearl had been taken from the underwater city of Coralia. Without it, all the city's lights were going dim. Everyone was scared. {name} was a small fairy who had just found out she could breathe underwater — which was very useful! She flapped her wings and swam down into the dark ocean.",
+"The trail of tiny glowing bits led to a dark cave. It was full of twisting paths and shadows. {name} was a bit scared. But someone had to go in. So {name} held up her wand like a torch and went inside, one step at a time.",
+"At the end of the cave, {name} found the pearl. Next to it was a very old, very blind octopus. He had been sitting on the pearl for thirty years because he thought it was an egg. {name} sat with him and gently explained the mix-up. Then {name} gave him a big hug and carried the pearl back to the city.",
+"When {name} put the pearl back in its spot, all the lights in Coralia blazed back on. The people swam in happy circles. The mayor put a tiny crown made of coral on {name}'s head. \"You are the greatest hero this city has ever had,\" she said. And {name} beamed with pride all the way home."
+]},
+
+"Robot|Outer space|A monster is lost|A big celebration":{
+title:"{name} and the Lost Space Monster",
+body:[
+"One day, {name} the robot was flying between planets when a message came through. A huge purple space monster was lost and all alone in a field of floating rocks. It was sending out a help signal. {name} flew straight over to find it.",
+"The monster was much bigger than {name}'s ship. But it had curled itself up small and was trying not to take up too much space. It looked very sad. {name} opened a speaker and made a friendly beeping sound. The monster beeped back. They did not speak the same language, but somehow they understood each other.",
+"It took seventeen star maps and one clever shortcut to find the monster's family. They were waiting near two big moons far away. {name} flew slowly and the monster followed. It took a long time, but they got there in the end.",
+"When the monster saw its family, it made a sound like a hundred foghorns all at once. The whole family wrapped their long arms around each other. Then one long arm came down and wrapped gently around {name}'s ship too. That night the family danced around the moons. {name} watched every single bit of it."
+]},
+
+"Robot|Underwater city|The sun has vanished|A funny surprise":{
+title:"{name} and the Sun at the Bottom of the Sea",
+body:[
+"The sun was gone. Everything was dark and cold. {name} was a waterproof robot, which was very lucky. {name} dived straight into the ocean to look for it. The satellites had tracked the sun to somewhere very deep and very strange.",
+"Down, down, down went {name}. Then — a warm orange glow. At the very bottom of the ocean, the sun was sitting on the sand. It looked confused. It also looked a little wet. It had rolled in through an underwater volcano and could not get back out.",
+"{name} made a plan. First, {name} found some very long anchor chains. Then {name} made a slide out of seaweed. Then {name} asked a very large whale for help. It took ages and there were two mistakes and one very shocked crab. But slowly, the sun floated back up through the water and popped back into the sky.",
+"It turned out the sun had just slipped. It had never happened before. The sun did not want to talk about it at all. But {name} became famous across space as the robot who used a whale to put the sun back. Every time someone told the story, it got a little bit sillier. {name} loved that."
+]}
+
 };
 
 const stepDefs=[
@@ -303,7 +304,7 @@ function showLoading(){
       </div>
       <div style="text-align:center;font-family:'Baloo 2',cursive;font-size:.9rem;color:var(--mu);margin-bottom:.45rem">Tap the game or press SPACE to jump!</div>
       <canvas id="gc" style="height:155px"></canvas>
-      <div class="gscores">Score: <span id="gs">0</span><span style="opacity:.4">|</span>Best: <span id="gb">0</span></div>
+      <div class="gscores">Score: <span id="gs">0</span>&nbsp;&nbsp;Best: <span id="gb">0</span></div>
     </div>
     <div id="nameArea" style="display:none">
       <div class="card">
